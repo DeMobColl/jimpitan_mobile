@@ -1,39 +1,29 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../../data/models/input/input_nominal_model.dart';
 import '../../domain/usecases/submit_input_nominal_usecase.dart';
 
+part 'input_controller.freezed.dart';
+part 'input_controller.g.dart';
+
 // State classes
-class InputNominalState {
-  final bool isLoading;
-  final String? error;
-  final bool isSuccess;
-
-  const InputNominalState({
-    this.isLoading = false,
-    this.error,
-    this.isSuccess = false,
-  });
-
-  InputNominalState copyWith({
-    bool? isLoading,
+@freezed
+class InputNominalState with _$InputNominalState {
+  const factory InputNominalState({
+    @Default(false) bool isLoading,
     String? error,
-    bool? isSuccess,
-  }) {
-    return InputNominalState(
-      isLoading: isLoading ?? this.isLoading,
-      error: error,
-      isSuccess: isSuccess ?? this.isSuccess,
-    );
-  }
+    @Default(false) bool isSuccess,
+  }) = _InputNominalState;
 }
 
 // Input controller
-class InputNominalController extends StateNotifier<InputNominalState> {
-  final SubmitInputNominalUseCase submitInputNominalUseCase;
-
-  InputNominalController({required this.submitInputNominalUseCase})
-    : super(const InputNominalState());
+@riverpod
+class InputNominalController extends _$InputNominalController {
+  @override
+  InputNominalState build() {
+    return const InputNominalState();
+  }
 
   Future<void> submitInputNominal({
     required String nama,
@@ -54,6 +44,9 @@ class InputNominalController extends StateNotifier<InputNominalState> {
         username: username,
       );
 
+      final submitInputNominalUseCase = ref.read(
+        submitInputNominalUseCaseProvider,
+      );
       final response = await submitInputNominalUseCase(request);
 
       if (response.isSuccess) {
@@ -73,11 +66,3 @@ class InputNominalController extends StateNotifier<InputNominalState> {
     state = const InputNominalState();
   }
 }
-
-// Provider
-final inputNominalControllerProvider =
-    StateNotifierProvider<InputNominalController, InputNominalState>((ref) {
-      return InputNominalController(
-        submitInputNominalUseCase: ref.watch(submitInputNominalUseCaseProvider),
-      );
-    });

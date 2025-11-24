@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'input_controller.dart';
+import '../auth/auth_controller.dart';
 
 class InputPage extends ConsumerStatefulWidget {
   const InputPage({super.key});
@@ -20,11 +21,22 @@ class _InputPageState extends ConsumerState<InputPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers or any other setup if needed
-    _namaController.text = 'Firman';
-    _nominalController.text = '';
-    _petugasController.text = 'Dwe';
-    _usernameController.text = 'Petugas';
+    // Check authentication on page load
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final authState = ref.read(authControllerProvider);
+      final user = authState.value;
+
+      if (user == null) {
+        context.go('/login');
+        return;
+      }
+
+      // Initialize controllers with user data
+      _namaController.text = 'Firman';
+      _nominalController.text = '';
+      _petugasController.text = user.name;
+      _usernameController.text = user.username;
+    });
   }
 
   @override
@@ -38,7 +50,17 @@ class _InputPageState extends ConsumerState<InputPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authControllerProvider);
+    final user = authState.value;
     final inputState = ref.watch(inputNominalControllerProvider);
+
+    // Redirect if not authenticated
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/login');
+      });
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     ref.listen<InputNominalState>(inputNominalControllerProvider, (
       previous,
@@ -54,8 +76,7 @@ class _InputPageState extends ConsumerState<InputPage> {
         // Clear form
         _namaController.clear();
         _nominalController.clear();
-        _petugasController.clear();
-        _usernameController.clear();
+        // Keep petugas and username as they are from logged in user
 
         // Reset state after showing success
         Future.delayed(const Duration(seconds: 1), () {
@@ -82,6 +103,17 @@ class _InputPageState extends ConsumerState<InputPage> {
             context.go('/');
           },
         ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Center(
+              child: Text(
+                'Hi, ${user.name}',
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -132,6 +164,7 @@ class _InputPageState extends ConsumerState<InputPage> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.admin_panel_settings),
                 ),
+                enabled: false, // Disable editing as it's from logged in user
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Petugas tidak boleh kosong';
@@ -147,6 +180,7 @@ class _InputPageState extends ConsumerState<InputPage> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.account_circle),
                 ),
+                enabled: false, // Disable editing as it's from logged in user
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Username tidak boleh kosong';

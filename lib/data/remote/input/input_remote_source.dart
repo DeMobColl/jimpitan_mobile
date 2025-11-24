@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/dio_provider.dart';
+import '../../../core/helpers/callback_parser.dart';
 import '../../models/input/input_nominal_model.dart';
 
 abstract class InputRemoteDataSource {
@@ -14,10 +15,6 @@ abstract class InputRemoteDataSource {
 class InputRemoteDataSourceImpl implements InputRemoteDataSource {
   final Dio dio;
 
-  // Google Apps Script URL
-  static const String _scriptUrl =
-      "https://script.google.com/macros/s/AKfycbyuodsQ0xhNObC3KAywYoSU9sUf8NBqB-wtUsET90b4QZhHWpeBXnBJfE5HoU2Og-P_tw/exec";
-
   InputRemoteDataSourceImpl({required this.dio});
 
   @override
@@ -26,9 +23,9 @@ class InputRemoteDataSourceImpl implements InputRemoteDataSource {
   ) async {
     try {
       log('[API] Submitting input nominal: ${request.toJson()}');
-      
+
       var response = await dio.post(
-        _scriptUrl,
+        '',
         data: request.toJson(),
         options: Options(
           contentType: Headers.jsonContentType,
@@ -62,17 +59,9 @@ class InputRemoteDataSourceImpl implements InputRemoteDataSource {
       log('[API] DATA: ${response.data}');
 
       try {
-        final dynamic responseData = response.data;
-        final Map<String, dynamic> jsonMap;
-
-        if (responseData is String) {
-           throw FormatException("Received String instead of JSON Map: $responseData");
-        } else {
-           jsonMap = responseData;
-        }
-
+        // Use CallbackParser helper to handle callback wrapper
+        final jsonMap = CallbackParser.parse(response.data);
         return InputNominalResponseModel.fromJson(jsonMap);
-
       } catch (parseError) {
         log('[API] Failed to parse response as JSON: $parseError');
         if (response.statusCode == 200) {
