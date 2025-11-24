@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/dio_provider.dart';
+import 'package:jimpitan/core/const/app_const.dart';
+import '../../../core/providers/dio_provider.dart';
 import '../../../core/helpers/callback_parser.dart';
 import '../../models/auth/auth_model.dart';
 
@@ -23,7 +24,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       // Use GET request with query parameters
       var response = await dio.get(
-        'https://script.google.com/macros/s/AKfycbw5pqaREdIKGChIY7IUUbM2xRdZRiG0uYxzG_F9MJvXdOq7VpJH-9g5KRl6zu285OLTKg/exec',
+        AppConst.baseUrl,
         queryParameters: {
           'action': 'login',
           'username': request.username,

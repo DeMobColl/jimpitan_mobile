@@ -1,8 +1,8 @@
 import 'dart:developer';
 
+import 'package:jimpitan/data/models/auth/auth_model.dart';
+import 'package:jimpitan/domain/usecases/login_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../data/models/auth/auth_model.dart';
-import '../../domain/usecases/login_usecase.dart';
 
 part 'auth_controller.g.dart';
 

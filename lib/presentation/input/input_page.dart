@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'input_controller.dart';
 import '../auth/auth_controller.dart';
+import 'widgets/input_header.dart';
+import 'widgets/input_text_field.dart';
+import 'widgets/submit_button.dart';
 
 class InputPage extends ConsumerStatefulWidget {
   const InputPage({super.key});
@@ -52,7 +55,6 @@ class _InputPageState extends ConsumerState<InputPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
     final user = authState.value;
-    final inputState = ref.watch(inputNominalControllerProvider);
 
     // Redirect if not authenticated
     if (user == null) {
@@ -94,117 +96,98 @@ class _InputPageState extends ConsumerState<InputPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Masukan Jumlah Jimpitan'),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.go('/');
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () => context.go('/'),
         ),
         actions: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Center(
               child: Text(
-                'Hi, ${user.name}',
-                style: const TextStyle(fontWeight: FontWeight.w500),
+                user.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
               ),
             ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _namaController,
-                decoration: const InputDecoration(
-                  labelText: 'Nama',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nama tidak boleh kosong';
-                  }
-                  return null;
-                },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const InputHeader(),
+                  const SizedBox(height: 32),
+                  InputTextField(
+                    controller: _namaController,
+                    label: 'Nama',
+                    hintText: 'Enter name',
+                    prefixIcon: Icons.person,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nama tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  InputTextField(
+                    controller: _nominalController,
+                    label: 'Nominal (Rp)',
+                    hintText: 'Enter amount',
+                    prefixIcon: Icons.payments,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nominal tidak boleh kosong';
+                      }
+                      if (double.tryParse(value) == null) {
+                        return 'Nominal harus berupa angka';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  InputTextField(
+                    controller: _petugasController,
+                    label: 'Petugas',
+                    prefixIcon: Icons.admin_panel_settings,
+                    readOnly: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Petugas tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  InputTextField(
+                    controller: _usernameController,
+                    label: 'Username',
+                    prefixIcon: Icons.account_circle,
+                    readOnly: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Username tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                  SubmitButton(onPressed: _submitForm),
+                ],
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _nominalController,
-                decoration: const InputDecoration(
-                  labelText: 'Nominal (Rp)',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.money),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Nominal tidak boleh kosong';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Nominal harus berupa angka';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _petugasController,
-                decoration: const InputDecoration(
-                  labelText: 'Petugas',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.admin_panel_settings),
-                ),
-                enabled: false, // Disable editing as it's from logged in user
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Petugas tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.account_circle),
-                ),
-                enabled: false, // Disable editing as it's from logged in user
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Username tidak boleh kosong';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: inputState.isLoading ? null : _submitForm,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                ),
-                child: inputState.isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Text('Submit', style: TextStyle(fontSize: 16)),
-              ),
-            ],
+            ),
           ),
         ),
       ),

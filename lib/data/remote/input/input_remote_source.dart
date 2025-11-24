@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/dio_provider.dart';
+import '../../../core/providers/dio_provider.dart';
 import '../../../core/helpers/callback_parser.dart';
 import '../../models/input/input_nominal_model.dart';
 
