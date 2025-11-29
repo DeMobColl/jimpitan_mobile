@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../auth/auth_controller.dart';
+import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
 
 class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authControllerProvider);
+    final authState = ref.watch(authNotifierProvider);
     final user = authState.value;
 
     return AppBar(
@@ -116,7 +116,7 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
-                ref.read(authControllerProvider.notifier).logout();
+                ref.read(authNotifierProvider.notifier).logout();
                 context.go('/login');
               },
               style: ElevatedButton.styleFrom(

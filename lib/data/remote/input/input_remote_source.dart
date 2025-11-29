@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers/dio_provider.dart';
-import '../../../core/helpers/callback_parser.dart';
+import '../../../core/helpers/callback_parser_helper.dart';
 import '../../models/input/input_nominal_model.dart';
 
 abstract class InputRemoteDataSource {
@@ -60,7 +60,7 @@ class InputRemoteDataSourceImpl implements InputRemoteDataSource {
 
       try {
         // Use CallbackParser helper to handle callback wrapper
-        final jsonMap = CallbackParser.parse(response.data);
+        final jsonMap = CallbackParserHelper.parse(response.data);
         return InputNominalResponseModel.fromJson(jsonMap);
       } catch (parseError) {
         log('[API] Failed to parse response as JSON: $parseError');

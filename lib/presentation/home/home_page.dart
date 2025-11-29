@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../auth/auth_controller.dart';
+import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
 import 'widgets/home_app_bar.dart';
 import 'widgets/welcome_section.dart';
 import 'widgets/home_action_button.dart';
@@ -11,7 +11,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authControllerProvider);
+    final authState = ref.watch(authNotifierProvider);
     final user = authState.value;
 
     return Scaffold(

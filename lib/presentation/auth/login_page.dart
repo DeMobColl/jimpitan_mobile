@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
 import '../../data/models/auth/auth_model.dart';
-import 'auth_controller.dart';
 import 'widgets/login_header.dart';
 import 'widgets/login_text_field.dart';
 import 'widgets/login_button.dart';
@@ -29,7 +29,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<AuthUserModel?>>(authControllerProvider, (
+    ref.listen<AsyncValue<AuthUserModel?>>(authNotifierProvider, (
       previous,
       next,
     ) {
@@ -130,7 +130,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   void _login() {
     if (_formKey.currentState!.validate()) {
       ref
-          .read(authControllerProvider.notifier)
+          .read(authNotifierProvider.notifier)
           .login(
             username: _usernameController.text,
             password: _passwordController.text,

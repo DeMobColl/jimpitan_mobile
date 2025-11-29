@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
 import 'input_controller.dart';
-import '../auth/auth_controller.dart';
 import 'widgets/input_header.dart';
 import 'widgets/input_text_field.dart';
 import 'widgets/submit_button.dart';
@@ -26,7 +26,7 @@ class _InputPageState extends ConsumerState<InputPage> {
     super.initState();
     // Check authentication on page load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authState = ref.read(authControllerProvider);
+      final authState = ref.read(authNotifierProvider);
       final user = authState.value;
 
       if (user == null) {
@@ -53,7 +53,7 @@ class _InputPageState extends ConsumerState<InputPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authControllerProvider);
+    final authState = ref.watch(authNotifierProvider);
     final user = authState.value;
 
     // Redirect if not authenticated

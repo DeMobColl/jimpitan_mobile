@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jimpitan/core/const/app_const.dart';
 import '../../../core/providers/dio_provider.dart';
-import '../../../core/helpers/callback_parser.dart';
+import '../../../core/helpers/callback_parser_helper.dart';
 import '../../models/auth/auth_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -37,7 +37,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       try {
         // Use CallbackParser helper to handle callback wrapper
-        final jsonMap = CallbackParser.parse(response.data);
+        final jsonMap = CallbackParserHelper.parse(response.data);
         return AuthResponseModel.fromJson(jsonMap);
       } catch (parseError) {
         log('[AUTH] Failed to parse response as JSON: $parseError');

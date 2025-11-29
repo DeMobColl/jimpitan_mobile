@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 /// Helper class for parsing Google Apps Script callback responses
-class CallbackParser {
+class CallbackParserHelper {
   /// Parses response data that may be wrapped in a callback function
   ///
   /// Example input: `callback({"status": "success", "data": {...}})`
