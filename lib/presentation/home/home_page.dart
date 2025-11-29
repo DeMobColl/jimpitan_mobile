@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jimpitan/core/const/prefs_key.dart';
 import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
 import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
+import 'provider/auth_refresh_notifier.dart';
 import 'widgets/home_app_bar.dart';
 import 'widgets/welcome_section.dart';
 import 'widgets/home_action_button.dart';
@@ -26,12 +27,46 @@ class _HomePageState extends ConsumerState<HomePage> {
       '[HomePage] username -> ${prefs.getString(PrefsKey.username)} \n '
       'password -> ${prefs.getString(PrefsKey.password)}',
     );
+
+    // Trigger silent auth refresh in background
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(authRefreshNotifierProvider.notifier).silentRefresh();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
     final user = authState.value;
+
+    // Listen to auth refresh state
+    ref.listen<AuthRefreshState>(authRefreshNotifierProvider, (previous, next) {
+      if (next == AuthRefreshState.failed ||
+          next == AuthRefreshState.sessionExpired) {
+        // Show session expired dialog
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: const Text('Session Expired'),
+            content: const Text(
+              'Your session has expired. Please login again.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  ref.read(authNotifierProvider.notifier).logout();
+                  context.go('/login');
+                },
+                child: const Text('Login'),
+              ),
+            ],
+          ),
+        );
+      } else if (next == AuthRefreshState.success) {
+        log('[HomePage] Auth refreshed successfully');
+      }
+    });
 
     return Scaffold(
       appBar: user != null ? const HomeAppBar() : null,
