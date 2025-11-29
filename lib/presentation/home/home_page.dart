@@ -1,16 +1,35 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/core/const/prefs_key.dart';
+import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
 import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
 import 'widgets/home_app_bar.dart';
 import 'widgets/welcome_section.dart';
 import 'widgets/home_action_button.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  initState() {
+    super.initState();
+    final prefs = ref.read(sharedPrefsHelperProvider);
+    log(
+      '[HomePage] username -> ${prefs.getString(PrefsKey.username)} \n '
+      'password -> ${prefs.getString(PrefsKey.password)}',
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
     final user = authState.value;
 

@@ -7,7 +7,7 @@ part of 'input_controller.dart';
 // **************************************************************************
 
 String _$inputNominalControllerHash() =>
-    r'80656adad1ada9793dec72b49f9a714ff14e21e5';
+    r'd290b7b7af5c70e7dfe97d39c0cc51046f0dc0d2';
 
 /// See also [InputNominalController].
 @ProviderFor(InputNominalController)

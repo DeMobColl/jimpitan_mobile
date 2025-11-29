@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/input/input_nominal_model.dart';
 import '../remote/input/input_remote_source.dart';
 import '../../domain/repositories/input_repository.dart';
+import '../../domain/entities/input/input_nominal_request.dart';
+import '../../domain/entities/input/input_nominal_response.dart';
+import '../mappers/input/input_nominal_request_mapper.dart';
+import '../mappers/input/input_nominal_response_mapper.dart';
 
 class InputRepositoryImpl implements InputRepository {
   final InputRemoteDataSource remoteDataSource;
@@ -9,10 +12,19 @@ class InputRepositoryImpl implements InputRepository {
   InputRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<InputNominalResponseModel> submitInputNominal(
-    InputNominalRequestModel request,
+  Future<InputNominalResponse> submitInputNominal(
+    InputNominalRequest request,
   ) async {
-    return await remoteDataSource.submitInputNominal(request);
+    // Convert domain entity to data model
+    final requestModel = InputNominalRequestMapper.toModel(request);
+
+    // Call remote data source
+    final responseModel = await remoteDataSource.submitInputNominal(
+      requestModel,
+    );
+
+    // Convert data model back to domain entity
+    return InputNominalResponseMapper.toEntity(responseModel);
   }
 }
 

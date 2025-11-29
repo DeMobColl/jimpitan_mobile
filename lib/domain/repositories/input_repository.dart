@@ -1,7 +1,6 @@
-import '../../data/models/input/input_nominal_model.dart';
+import '../entities/input/input_nominal_request.dart';
+import '../entities/input/input_nominal_response.dart';
 
 abstract class InputRepository {
-  Future<InputNominalResponseModel> submitInputNominal(
-    InputNominalRequestModel request,
-  );
+  Future<InputNominalResponse> submitInputNominal(InputNominalRequest request);
 }

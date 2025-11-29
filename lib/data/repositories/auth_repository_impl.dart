@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/auth/auth_model.dart';
 import '../remote/auth/auth_remote_source.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../domain/entities/auth/auth_request.dart';
+import '../../domain/entities/auth/auth_response.dart';
+import '../mappers/auth/auth_request_mapper.dart';
+import '../mappers/auth/auth_response_mapper.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -9,8 +12,15 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<AuthResponseModel> login(AuthRequestModel request) async {
-    return await remoteDataSource.login(request);
+  Future<AuthResponse> login(AuthRequest request) async {
+    // Convert domain entity to data model
+    final requestModel = AuthRequestMapper.toModel(request);
+
+    // Call remote data source
+    final responseModel = await remoteDataSource.login(requestModel);
+
+    // Convert data model back to domain entity
+    return AuthResponseMapper.toEntity(responseModel);
   }
 }
 

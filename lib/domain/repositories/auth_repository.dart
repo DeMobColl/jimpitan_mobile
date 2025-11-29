@@ -1,5 +1,6 @@
-import '../../data/models/auth/auth_model.dart';
+import '../entities/auth/auth_request.dart';
+import '../entities/auth/auth_response.dart';
 
 abstract class AuthRepository {
-  Future<AuthResponseModel> login(AuthRequestModel request);
+  Future<AuthResponse> login(AuthRequest request);
 }

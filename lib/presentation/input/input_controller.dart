@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
-import '../../data/models/input/input_nominal_model.dart';
+import '../../domain/entities/input/input_nominal_request.dart';
 import '../../domain/usecases/submit_input_nominal_usecase.dart';
 
 part 'input_controller.freezed.dart';
@@ -35,7 +35,7 @@ class InputNominalController extends _$InputNominalController {
 
     try {
       const uuid = Uuid();
-      final request = InputNominalRequestModel(
+      final request = InputNominalRequest(
         id: uuid.v4(),
         nama: nama,
         nominal: nominal,

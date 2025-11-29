@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
-import '../../data/models/auth/auth_model.dart';
+import '../../domain/entities/auth/auth_user.dart';
 import 'widgets/login_header.dart';
 import 'widgets/login_text_field.dart';
 import 'widgets/login_button.dart';
@@ -29,10 +29,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<AuthUserModel?>>(authNotifierProvider, (
-      previous,
-      next,
-    ) {
+    ref.listen<AsyncValue<AuthUser?>>(authNotifierProvider, (previous, next) {
       next.when(
         data: (user) {
           if (user != null && previous?.value == null) {
