@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/presentation/scan_qr/scan_qr_page.dart';
 import 'presentation/splash/splash_page.dart';
 import 'presentation/home/home_page.dart';
 import 'presentation/input/input_page.dart';
@@ -26,6 +27,11 @@ final GoRouter appRouter = GoRouter(
       path: '/input',
       name: 'input',
       builder: (context, state) => const InputPage(),
+    ),
+    GoRoute(
+      path: '/scanQr',
+      name: 'scanQr',
+      builder: (context, state) => const ScanQrPage(),
     ),
   ],
 );

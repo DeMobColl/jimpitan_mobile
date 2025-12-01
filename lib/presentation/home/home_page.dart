@@ -71,7 +71,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: user != null ? const HomeAppBar() : null,
       floatingActionButton: user != null
           ? FloatingActionButton(
-              onPressed: () => context.go('/input'),
+              onPressed: () => context.go('/scanQr'),
               child: const Icon(Icons.add),
             )
           : null,
