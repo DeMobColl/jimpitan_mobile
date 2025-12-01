@@ -21,6 +21,7 @@ AuthRequestModel _$AuthRequestModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthRequestModel {
+  String get action => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
 
@@ -41,7 +42,7 @@ abstract class $AuthRequestModelCopyWith<$Res> {
     $Res Function(AuthRequestModel) then,
   ) = _$AuthRequestModelCopyWithImpl<$Res, AuthRequestModel>;
   @useResult
-  $Res call({String username, String password});
+  $Res call({String action, String username, String password});
 }
 
 /// @nodoc
@@ -58,9 +59,17 @@ class _$AuthRequestModelCopyWithImpl<$Res, $Val extends AuthRequestModel>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? username = null, Object? password = null}) {
+  $Res call({
+    Object? action = null,
+    Object? username = null,
+    Object? password = null,
+  }) {
     return _then(
       _value.copyWith(
+            action: null == action
+                ? _value.action
+                : action // ignore: cast_nullable_to_non_nullable
+                      as String,
             username: null == username
                 ? _value.username
                 : username // ignore: cast_nullable_to_non_nullable
@@ -84,7 +93,7 @@ abstract class _$$AuthRequestModelImplCopyWith<$Res>
   ) = __$$AuthRequestModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String username, String password});
+  $Res call({String action, String username, String password});
 }
 
 /// @nodoc
@@ -100,9 +109,17 @@ class __$$AuthRequestModelImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? username = null, Object? password = null}) {
+  $Res call({
+    Object? action = null,
+    Object? username = null,
+    Object? password = null,
+  }) {
     return _then(
       _$AuthRequestModelImpl(
+        action: null == action
+            ? _value.action
+            : action // ignore: cast_nullable_to_non_nullable
+                  as String,
         username: null == username
             ? _value.username
             : username // ignore: cast_nullable_to_non_nullable
@@ -120,6 +137,7 @@ class __$$AuthRequestModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AuthRequestModelImpl implements _AuthRequestModel {
   const _$AuthRequestModelImpl({
+    this.action = 'mobileLogin',
     required this.username,
     required this.password,
   });
@@ -128,13 +146,16 @@ class _$AuthRequestModelImpl implements _AuthRequestModel {
       _$$AuthRequestModelImplFromJson(json);
 
   @override
+  @JsonKey()
+  final String action;
+  @override
   final String username;
   @override
   final String password;
 
   @override
   String toString() {
-    return 'AuthRequestModel(username: $username, password: $password)';
+    return 'AuthRequestModel(action: $action, username: $username, password: $password)';
   }
 
   @override
@@ -142,6 +163,7 @@ class _$AuthRequestModelImpl implements _AuthRequestModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthRequestModelImpl &&
+            (identical(other.action, action) || other.action == action) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.password, password) ||
@@ -150,7 +172,7 @@ class _$AuthRequestModelImpl implements _AuthRequestModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, username, password);
+  int get hashCode => Object.hash(runtimeType, action, username, password);
 
   /// Create a copy of AuthRequestModel
   /// with the given fields replaced by the non-null parameter values.
@@ -171,6 +193,7 @@ class _$AuthRequestModelImpl implements _AuthRequestModel {
 
 abstract class _AuthRequestModel implements AuthRequestModel {
   const factory _AuthRequestModel({
+    final String action,
     required final String username,
     required final String password,
   }) = _$AuthRequestModelImpl;
@@ -178,6 +201,8 @@ abstract class _AuthRequestModel implements AuthRequestModel {
   factory _AuthRequestModel.fromJson(Map<String, dynamic> json) =
       _$AuthRequestModelImpl.fromJson;
 
+  @override
+  String get action;
   @override
   String get username;
   @override
@@ -201,7 +226,7 @@ mixin _$AuthUserModel {
   String get name => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  String get token => throw _privateConstructorUsedError;
+  String get mobileToken => throw _privateConstructorUsedError;
   String get tokenExpiry => throw _privateConstructorUsedError;
   String get lastLogin => throw _privateConstructorUsedError;
 
@@ -227,7 +252,7 @@ abstract class $AuthUserModelCopyWith<$Res> {
     String name,
     String role,
     String username,
-    String token,
+    String mobileToken,
     String tokenExpiry,
     String lastLogin,
   });
@@ -252,7 +277,7 @@ class _$AuthUserModelCopyWithImpl<$Res, $Val extends AuthUserModel>
     Object? name = null,
     Object? role = null,
     Object? username = null,
-    Object? token = null,
+    Object? mobileToken = null,
     Object? tokenExpiry = null,
     Object? lastLogin = null,
   }) {
@@ -274,9 +299,9 @@ class _$AuthUserModelCopyWithImpl<$Res, $Val extends AuthUserModel>
                 ? _value.username
                 : username // ignore: cast_nullable_to_non_nullable
                       as String,
-            token: null == token
-                ? _value.token
-                : token // ignore: cast_nullable_to_non_nullable
+            mobileToken: null == mobileToken
+                ? _value.mobileToken
+                : mobileToken // ignore: cast_nullable_to_non_nullable
                       as String,
             tokenExpiry: null == tokenExpiry
                 ? _value.tokenExpiry
@@ -306,7 +331,7 @@ abstract class _$$AuthUserModelImplCopyWith<$Res>
     String name,
     String role,
     String username,
-    String token,
+    String mobileToken,
     String tokenExpiry,
     String lastLogin,
   });
@@ -330,7 +355,7 @@ class __$$AuthUserModelImplCopyWithImpl<$Res>
     Object? name = null,
     Object? role = null,
     Object? username = null,
-    Object? token = null,
+    Object? mobileToken = null,
     Object? tokenExpiry = null,
     Object? lastLogin = null,
   }) {
@@ -352,9 +377,9 @@ class __$$AuthUserModelImplCopyWithImpl<$Res>
             ? _value.username
             : username // ignore: cast_nullable_to_non_nullable
                   as String,
-        token: null == token
-            ? _value.token
-            : token // ignore: cast_nullable_to_non_nullable
+        mobileToken: null == mobileToken
+            ? _value.mobileToken
+            : mobileToken // ignore: cast_nullable_to_non_nullable
                   as String,
         tokenExpiry: null == tokenExpiry
             ? _value.tokenExpiry
@@ -377,7 +402,7 @@ class _$AuthUserModelImpl implements _AuthUserModel {
     required this.name,
     required this.role,
     required this.username,
-    required this.token,
+    required this.mobileToken,
     required this.tokenExpiry,
     required this.lastLogin,
   });
@@ -394,7 +419,7 @@ class _$AuthUserModelImpl implements _AuthUserModel {
   @override
   final String username;
   @override
-  final String token;
+  final String mobileToken;
   @override
   final String tokenExpiry;
   @override
@@ -402,7 +427,7 @@ class _$AuthUserModelImpl implements _AuthUserModel {
 
   @override
   String toString() {
-    return 'AuthUserModel(id: $id, name: $name, role: $role, username: $username, token: $token, tokenExpiry: $tokenExpiry, lastLogin: $lastLogin)';
+    return 'AuthUserModel(id: $id, name: $name, role: $role, username: $username, mobileToken: $mobileToken, tokenExpiry: $tokenExpiry, lastLogin: $lastLogin)';
   }
 
   @override
@@ -415,7 +440,8 @@ class _$AuthUserModelImpl implements _AuthUserModel {
             (identical(other.role, role) || other.role == role) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.token, token) || other.token == token) &&
+            (identical(other.mobileToken, mobileToken) ||
+                other.mobileToken == mobileToken) &&
             (identical(other.tokenExpiry, tokenExpiry) ||
                 other.tokenExpiry == tokenExpiry) &&
             (identical(other.lastLogin, lastLogin) ||
@@ -430,7 +456,7 @@ class _$AuthUserModelImpl implements _AuthUserModel {
     name,
     role,
     username,
-    token,
+    mobileToken,
     tokenExpiry,
     lastLogin,
   );
@@ -455,7 +481,7 @@ abstract class _AuthUserModel implements AuthUserModel {
     required final String name,
     required final String role,
     required final String username,
-    required final String token,
+    required final String mobileToken,
     required final String tokenExpiry,
     required final String lastLogin,
   }) = _$AuthUserModelImpl;
@@ -472,7 +498,7 @@ abstract class _AuthUserModel implements AuthUserModel {
   @override
   String get username;
   @override
-  String get token;
+  String get mobileToken;
   @override
   String get tokenExpiry;
   @override

@@ -9,6 +9,7 @@ part of 'auth_model.dart';
 _$AuthRequestModelImpl _$$AuthRequestModelImplFromJson(
   Map<String, dynamic> json,
 ) => _$AuthRequestModelImpl(
+  action: json['action'] as String? ?? 'mobileLogin',
   username: json['username'] as String,
   password: json['password'] as String,
 );
@@ -16,6 +17,7 @@ _$AuthRequestModelImpl _$$AuthRequestModelImplFromJson(
 Map<String, dynamic> _$$AuthRequestModelImplToJson(
   _$AuthRequestModelImpl instance,
 ) => <String, dynamic>{
+  'action': instance.action,
   'username': instance.username,
   'password': instance.password,
 };
@@ -26,7 +28,7 @@ _$AuthUserModelImpl _$$AuthUserModelImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       role: json['role'] as String,
       username: json['username'] as String,
-      token: json['token'] as String,
+      mobileToken: json['mobileToken'] as String,
       tokenExpiry: json['tokenExpiry'] as String,
       lastLogin: json['lastLogin'] as String,
     );
@@ -37,7 +39,7 @@ Map<String, dynamic> _$$AuthUserModelImplToJson(_$AuthUserModelImpl instance) =>
       'name': instance.name,
       'role': instance.role,
       'username': instance.username,
-      'token': instance.token,
+      'mobileToken': instance.mobileToken,
       'tokenExpiry': instance.tokenExpiry,
       'lastLogin': instance.lastLogin,
     };

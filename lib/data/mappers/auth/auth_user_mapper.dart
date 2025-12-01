@@ -8,7 +8,7 @@ class AuthUserMapper {
       name: model.name,
       role: model.role,
       username: model.username,
-      token: model.token,
+      token: model.mobileToken,
       tokenExpiry: model.tokenExpiry,
       lastLogin: model.lastLogin,
     );
@@ -20,7 +20,7 @@ class AuthUserMapper {
       name: entity.name,
       role: entity.role,
       username: entity.username,
-      token: entity.token,
+      mobileToken: entity.token,
       tokenExpiry: entity.tokenExpiry,
       lastLogin: entity.lastLogin,
     );

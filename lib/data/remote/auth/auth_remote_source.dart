@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jimpitan/core/const/app_const.dart';
 import '../../../core/providers/dio_provider.dart';
-import '../../../core/helpers/callback_parser_helper.dart';
 import '../../models/auth/auth_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -20,42 +19,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<AuthResponseModel> login(AuthRequestModel request) async {
     try {
       log('[AUTH] Attempting login for username: ${request.username}');
-      log('[AUTH] Attempting login for password: ${request.password}');
 
-      // Use GET request with query parameters
-      var response = await dio.get(
+      final response = await dio.post(
         AppConst.baseUrl,
-        queryParameters: {
-          'action': 'login',
-          'username': request.username,
-          'password': request.password,
-        },
+        data: request.toJson(),
+        options: Options(
+          contentType: Headers.jsonContentType,
+          headers: {'Accept': 'application/json'},
+        ),
       );
 
-      log('[AUTH] SUCCESS CODE: ${response.statusCode}');
-      log('[AUTH] DATA: ${response.data}');
+      log('[AUTH] Response status: ${response.statusCode}');
+      log('[AUTH] Response data: ${response.data}');
 
-      try {
-        // Use CallbackParser helper to handle callback wrapper
-        final jsonMap = CallbackParserHelper.parse(response.data);
-        return AuthResponseModel.fromJson(jsonMap);
-      } catch (parseError) {
-        log('[AUTH] Failed to parse response as JSON: $parseError');
-        if (response.statusCode == 200) {
-          return const AuthResponseModel(
-            status: 'success',
-            message: 'Login successful (Parsing skipped)',
-          );
-        } else {
-          return AuthResponseModel(
-            status: 'error',
-            message: 'Unexpected response format: ${response.data}',
-          );
-        }
-      }
+      return AuthResponseModel.fromJson(response.data);
     } on DioException catch (e) {
+      log('[AUTH] DioException: ${e.message}');
+
       if (e.response != null) {
-        log('[AUTH] ERROR ${e.response?.statusCode}: ${e.response?.data}');
+        log('[AUTH] Error status: ${e.response?.statusCode}');
+        log('[AUTH] Error data: ${e.response?.data}');
+
         try {
           return AuthResponseModel.fromJson(e.response!.data);
         } catch (_) {
@@ -64,15 +48,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             message: 'Server error: ${e.response?.statusCode}',
           );
         }
-      } else {
-        log('[AUTH] ERROR: ${e.message}');
-        return AuthResponseModel(
-          status: 'error',
-          message: 'Network error: ${e.message}',
-        );
       }
+
+      return AuthResponseModel(
+        status: 'error',
+        message: 'Network error: ${e.message}',
+      );
     } catch (e) {
-      log('[AUTH] UNEXPECTED ERROR: $e');
+      log('[AUTH] Unexpected error: $e');
       return AuthResponseModel(
         status: 'error',
         message: 'Unexpected error: $e',

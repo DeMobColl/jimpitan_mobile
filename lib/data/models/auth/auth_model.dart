@@ -6,6 +6,7 @@ part 'auth_model.g.dart';
 @freezed
 class AuthRequestModel with _$AuthRequestModel {
   const factory AuthRequestModel({
+    @Default('mobileLogin') String action,
     required String username,
     required String password,
   }) = _AuthRequestModel;
@@ -21,7 +22,7 @@ class AuthUserModel with _$AuthUserModel {
     required String name,
     required String role,
     required String username,
-    required String token,
+    required String mobileToken,
     required String tokenExpiry,
     required String lastLogin,
   }) = _AuthUserModel;
