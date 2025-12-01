@@ -9,7 +9,6 @@ import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
 import 'provider/auth_refresh_notifier.dart';
 import 'widgets/home_app_bar.dart';
 import 'widgets/welcome_section.dart';
-import 'widgets/home_action_button.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -70,6 +69,12 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     return Scaffold(
       appBar: user != null ? const HomeAppBar() : null,
+      floatingActionButton: user != null
+          ? FloatingActionButton(
+              onPressed: () => context.go('/input'),
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: SafeArea(
         child: authState.when(
           data: (user) {
@@ -82,10 +87,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                     children: [
                       WelcomeSection(userName: null, userRole: null),
                       const SizedBox(height: 32),
-                      HomeActionButton(
-                        icon: Icons.login,
-                        label: 'Login to Continue',
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.login),
+                        label: const Text('Login to Continue'),
                         onPressed: () => context.go('/login'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -93,20 +104,17 @@ class _HomePageState extends ConsumerState<HomePage> {
               );
             }
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    WelcomeSection(userName: user.name, userRole: user.role),
-                    const SizedBox(height: 40),
-                    HomeActionButton(
-                      icon: Icons.add,
-                      label: 'Add New Entry',
-                      onPressed: () => context.go('/input'),
-                    ),
-                  ],
+            return Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      WelcomeSection(userName: user.name, userRole: user.role),
+                    ],
+                  ),
                 ),
               ),
             );
