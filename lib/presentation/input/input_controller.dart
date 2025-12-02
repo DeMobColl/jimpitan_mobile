@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/entities/input/input_nominal_request.dart';
-import '../../domain/usecases/submit_input_nominal_usecase.dart';
+import '../../domain/usecases/input/submit_input_nominal_usecase.dart';
 
 part 'input_controller.freezed.dart';
 part 'input_controller.g.dart';

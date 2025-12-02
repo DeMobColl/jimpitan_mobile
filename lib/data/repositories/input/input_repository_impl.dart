@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../remote/input/input_remote_source.dart';
-import '../../domain/repositories/input_repository.dart';
-import '../../domain/entities/input/input_nominal_request.dart';
-import '../../domain/entities/input/input_nominal_response.dart';
-import '../mappers/input/input_nominal_request_mapper.dart';
-import '../mappers/input/input_nominal_response_mapper.dart';
+import '../../remote/input/input_remote_source.dart';
+import '../../../domain/repositories/input/input_repository.dart';
+import '../../../domain/entities/input/input_nominal_request.dart';
+import '../../../domain/entities/input/input_nominal_response.dart';
+import '../../mappers/input/input_nominal_request_mapper.dart';
+import '../../mappers/input/input_nominal_response_mapper.dart';
 
 class InputRepositoryImpl implements InputRepository {
   final InputRemoteDataSource remoteDataSource;

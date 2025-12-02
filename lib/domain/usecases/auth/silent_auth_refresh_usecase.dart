@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../entities/auth/auth_request.dart';
-import '../entities/auth/auth_response.dart';
-import '../repositories/auth_repository.dart';
-import '../../data/repositories/auth_repository_impl.dart';
-import '../../data/local/auth/auth_local_source.dart';
+import '../../entities/auth/auth_request.dart';
+import '../../entities/auth/auth_response.dart';
+import '../../repositories/auth/auth_repository.dart';
+import '../../../data/repositories/auth/auth_repository_impl.dart';
+import '../../../data/local/auth/auth_local_source.dart';
 
 class SilentAuthRefreshUseCase {
   final AuthRepository repository;

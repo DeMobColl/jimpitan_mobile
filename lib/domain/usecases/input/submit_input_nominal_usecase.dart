@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/repositories/input_repository_impl.dart';
-import '../repositories/input_repository.dart';
-import '../entities/input/input_nominal_request.dart';
-import '../entities/input/input_nominal_response.dart';
+import '../../../data/repositories/input/input_repository_impl.dart';
+import '../../repositories/input/input_repository.dart';
+import '../../entities/input/input_nominal_request.dart';
+import '../../entities/input/input_nominal_response.dart';
 
 class SubmitInputNominalUseCase {
   final InputRepository repository;

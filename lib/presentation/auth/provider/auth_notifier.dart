@@ -4,7 +4,7 @@ import 'package:jimpitan/core/const/prefs_key.dart';
 import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
 import 'package:jimpitan/domain/entities/auth/auth_request.dart';
 import 'package:jimpitan/domain/entities/auth/auth_user.dart';
-import 'package:jimpitan/domain/usecases/login_usecase.dart';
+import 'package:jimpitan/domain/usecases/auth/login_usecase.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_notifier.g.dart';

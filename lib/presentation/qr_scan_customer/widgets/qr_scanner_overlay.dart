@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jimpitan/presentation/scan_qr/widgets/qr_overlay_painter.dart';
+import 'package:jimpitan/presentation/qr_scan_customer/widgets/qr_overlay_painter.dart';
 
 class QRScannerOverlay extends StatefulWidget {
   const QRScannerOverlay({super.key});

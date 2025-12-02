@@ -8,14 +8,14 @@ import 'package:jimpitan/presentation/qr_scan_customer/helper/scan_qr_dialogs_he
 import 'package:jimpitan/presentation/qr_scan_customer/widgets/qr_scanner_overlay.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class ScanQrPage extends ConsumerStatefulWidget {
-  const ScanQrPage({super.key});
+class QrScanPage extends ConsumerStatefulWidget {
+  const QrScanPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ScanQrPageState();
 }
 
-class _ScanQrPageState extends ConsumerState<ScanQrPage> {
+class _ScanQrPageState extends ConsumerState<QrScanPage> {
   final MobileScannerController _controller = MobileScannerController(
     autoStart: false,
   );

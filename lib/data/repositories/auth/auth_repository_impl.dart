@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../remote/auth/auth_remote_source.dart';
-import '../local/auth/auth_local_source.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../domain/entities/auth/auth_request.dart';
-import '../../domain/entities/auth/auth_response.dart';
-import '../mappers/auth/auth_request_mapper.dart';
-import '../mappers/auth/auth_response_mapper.dart';
+import '../../remote/auth/auth_remote_source.dart';
+import '../../local/auth/auth_local_source.dart';
+import '../../../domain/repositories/auth/auth_repository.dart';
+import '../../../domain/entities/auth/auth_request.dart';
+import '../../../domain/entities/auth/auth_response.dart';
+import '../../mappers/auth/auth_request_mapper.dart';
+import '../../mappers/auth/auth_response_mapper.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;

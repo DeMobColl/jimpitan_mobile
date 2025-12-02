@@ -25,7 +25,8 @@ class _HomePageState extends ConsumerState<HomePage> {
     final prefs = ref.read(sharedPrefsHelperProvider);
     log(
       '[HomePage] username -> ${prefs.getString(PrefsKey.username)} \n '
-      'password -> ${prefs.getString(PrefsKey.password)}',
+      'password -> ${prefs.getString(PrefsKey.password)} \n'
+      ' token -> ${prefs.getString(PrefsKey.authToken)}',
     );
 
     // Trigger silent auth refresh in background

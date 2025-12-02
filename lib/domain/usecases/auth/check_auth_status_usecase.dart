@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../repositories/auth_repository.dart';
-import '../../data/repositories/auth_repository_impl.dart';
+import '../../repositories/auth/auth_repository.dart';
+import '../../../data/repositories/auth/auth_repository_impl.dart';
 
 class CheckAuthStatusUseCase {
   final AuthRepository repository;

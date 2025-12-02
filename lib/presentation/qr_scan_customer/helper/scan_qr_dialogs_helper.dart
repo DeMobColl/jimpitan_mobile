@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jimpitan/core/const/app_const.dart';
 
 class ScanQrDialogsHelper {
   /// Shows success dialog when attendance is submitted successfully
@@ -22,11 +24,11 @@ class ScanQrDialogsHelper {
                 size: 64,
               ),
               title: Text(
-                'Absensi Berhasil',
+                'Mendapatkan data jimpitan',
                 style: TextStyle(color: colorScheme.onSurface),
               ),
               content: Text(
-                'Absensi Anda telah berhasil dikirim.',
+                'Anda akan dibawa ke halaman input jimpitan.',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: colorScheme.onSurfaceVariant),
               ),
@@ -38,7 +40,8 @@ class ScanQrDialogsHelper {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(); // Close dialog
-                    Navigator.of(context).pop(); // Return to previous screen
+                    context.goNamed(AppConst.inputRouteName);
+                    // Navigator.of(context).pop(); // Return to previous screen
                   },
                   child: const Text('OK'),
                 ),
@@ -70,7 +73,7 @@ class ScanQrDialogsHelper {
               size: 64,
             ),
             title: Text(
-              'Absensi Gagal',
+              'Gagal Mengirim Data Jimpitan',
               style: TextStyle(color: colorScheme.onSurface),
             ),
             content: Text(
@@ -122,110 +125,6 @@ class ScanQrDialogsHelper {
           ),
     );
   }
-
-  /// Shows dialog when user is outside attendance location range
-  static void showLocationOutOfRangeDialog(
-    BuildContext context, {
-    required String locationArea,
-    required String distance,
-    required double maxDistance,
-    required VoidCallback onRetry,
-  }) {
-    if (!context.mounted) return;
-
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isDarkMode = theme.brightness == Brightness.dark;
-
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            backgroundColor: colorScheme.surface,
-            icon: Icon(
-              Icons.location_off,
-              color: _getErrorColor(isDarkMode),
-              size: 64,
-            ),
-            title: Text(
-              'Lokasi Terlalu Jauh',
-              style: TextStyle(color: colorScheme.onSurface),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Location area badge
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _getErrorBackgroundColor(isDarkMode),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: _getErrorBorderColor(isDarkMode)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.location_off,
-                        size: 16,
-                        color: _getErrorColor(isDarkMode),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        locationArea,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: _getErrorColor(isDarkMode),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Anda berada di luar jangkauan area absensi.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: colorScheme.onSurfaceVariant),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Jarak Anda: $distance',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Jarak maksimal: ${maxDistance.toInt()} meter',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onPrimary,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  onRetry();
-                },
-                child: const Text('Coba Lagi'),
-              ),
-            ],
-          ),
-    );
-  }
-
   /// Shows dialog when QR code is invalid or expired
   static void showInvalidOrExpiredQRDialog(
     BuildContext context,

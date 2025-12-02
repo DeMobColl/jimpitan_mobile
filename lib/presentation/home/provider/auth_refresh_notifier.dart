@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../domain/usecases/silent_auth_refresh_usecase.dart';
+import '../../../domain/usecases/auth/silent_auth_refresh_usecase.dart';
 import '../../../data/local/auth/auth_local_source.dart';
 import '../../../core/helpers/shared_prefs_helper.dart';
 import '../../../core/const/prefs_key.dart';

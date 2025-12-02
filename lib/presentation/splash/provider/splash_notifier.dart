@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../domain/usecases/check_auth_status_usecase.dart';
+import '../../../domain/usecases/auth/check_auth_status_usecase.dart';
 
 part 'splash_notifier.g.dart';
 
