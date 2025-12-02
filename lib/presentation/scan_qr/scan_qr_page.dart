@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jimpitan/presentation/scan_qr/camera_controller_helper.dart';
-import 'package:jimpitan/presentation/scan_qr/scan_qr_dialogs_helper.dart';
+import 'package:jimpitan/presentation/scan_qr/helper/camera_controller_helper.dart';
+import 'package:jimpitan/presentation/scan_qr/helper/scan_qr_dialogs_helper.dart';
 import 'package:jimpitan/presentation/scan_qr/widgets/qr_scanner_overlay.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -19,6 +19,7 @@ class _ScanQrPageState extends ConsumerState<ScanQrPage> {
   );
   late final CameraControllerHelper _cameraHelper;
   bool _permissionDenied = false;
+  bool _isTorchOn = false;
 
   @override
   void initState() {
@@ -28,6 +29,11 @@ class _ScanQrPageState extends ConsumerState<ScanQrPage> {
       onPermissionDenied: () {
         if (mounted && !_permissionDenied) {
           setState(() => _permissionDenied = true);
+        }
+      },
+      onTorchStateChanged: () {
+        if (mounted) {
+          setState(() => _isTorchOn = _cameraHelper.isTorchOn);
         }
       },
     );
@@ -51,6 +57,22 @@ class _ScanQrPageState extends ConsumerState<ScanQrPage> {
     super.dispose();
   }
 
+  void _toggleTorch() async {
+    try {
+      await _cameraHelper.toggleTorch();
+    } catch (e) {
+      // Torch not available on this device
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Flash tidak tersedia pada perangkat ini'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,8 +87,18 @@ class _ScanQrPageState extends ConsumerState<ScanQrPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop()
+          onPressed: () => context.pop(),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              _isTorchOn ? Icons.flash_on : Icons.flash_off,
+              color: Colors.white,
+            ),
+            onPressed: _toggleTorch,
+            tooltip: _isTorchOn ? 'Matikan Flash' : 'Nyalakan Flash',
+          ),
+        ],
       ),
       body: Stack(
         children: [

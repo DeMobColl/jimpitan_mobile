@@ -16,19 +16,18 @@ class QROverlayPainter extends CustomPainter {
 
     // animated scanning line
     final scanLineY = (size.height * animationValue);
-    final scanLinePaint =
-        Paint()
-          ..shader = LinearGradient(
-            colors: [
-              Colors.transparent,
-              whiteColor.withOpacity(0.5),
-              whiteColor.withOpacity(0.9),
-              whiteColor.withOpacity(0.5),
-              Colors.transparent,
-            ],
-            stops: const [0.0, 0.3, 0.5, 0.7, 1.0],
-          ).createShader(Rect.fromLTWH(0, scanLineY - 3, size.width, 6))
-          ..style = PaintingStyle.fill;
+    final scanLinePaint = Paint()
+      ..shader = LinearGradient(
+        colors: [
+          Colors.transparent,
+          whiteColor.withValues(alpha: 0.5),
+          whiteColor.withValues(alpha: 0.9),
+          whiteColor.withValues(alpha: 0.5),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.3, 0.5, 0.7, 1.0],
+      ).createShader(Rect.fromLTWH(0, scanLineY - 3, size.width, 6))
+      ..style = PaintingStyle.fill;
 
     canvas.drawRect(
       Rect.fromLTWH(0, scanLineY - 3, size.width, 6),
@@ -103,12 +102,11 @@ class QROverlayPainter extends CustomPainter {
     Color color,
   ) {
     final path = Path();
-    final paint =
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = thickness
-          ..strokeCap = StrokeCap.round
-          ..color = color;
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = thickness
+      ..strokeCap = StrokeCap.round
+      ..color = color;
 
     // small offset to ensure corners are fully visible
     final offset = thickness / 2;
@@ -168,10 +166,9 @@ class QROverlayPainter extends CustomPainter {
     double radius,
     Color color,
   ) {
-    final glowPaint =
-        Paint()
-          ..color = color.withOpacity(0.4)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
+    final glowPaint = Paint()
+      ..color = color.withValues(alpha: 0.4)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 15);
 
     canvas.drawCircle(corner, radius / 2.5, glowPaint);
   }

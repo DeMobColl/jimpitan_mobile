@@ -7,11 +7,14 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 class CameraControllerHelper with WidgetsBindingObserver {
   final MobileScannerController controller;
   final VoidCallback onPermissionDenied;
+  final VoidCallback? onTorchStateChanged;
   bool _isProcessing = false;
+  bool _isTorchOn = false;
 
   CameraControllerHelper({
     required this.controller,
     required this.onPermissionDenied,
+    this.onTorchStateChanged,
   });
 
   void initialize() {
@@ -48,6 +51,20 @@ class CameraControllerHelper with WidgetsBindingObserver {
   bool get isProcessing => _isProcessing;
   set isProcessing(bool value) => _isProcessing = value;
 
+  bool get isTorchOn => _isTorchOn;
+
+  Future<void> toggleTorch() async {
+    try {
+      await controller.toggleTorch();
+      _isTorchOn = !_isTorchOn;
+      onTorchStateChanged?.call();
+      log('[ScanQR] Torch toggled: $_isTorchOn');
+    } catch (e) {
+      log('[ScanQR] Error toggling torch: $e');
+      rethrow;
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -60,12 +77,17 @@ class CameraControllerHelper with WidgetsBindingObserver {
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
       case AppLifecycleState.paused:
+        // Turn off torch when app goes to background to save battery
+        if (_isTorchOn && controller.value.isRunning) {
+          unawaited(controller.toggleTorch());
+          _isTorchOn = false;
+        }
         if (controller.value.isRunning) {
           unawaited(controller.stop());
         }
         break;
       case AppLifecycleState.resumed:
-      log('[CameraControllerHelper] App resumed');
+        log('[CameraControllerHelper] App resumed');
         if (!_isProcessing && !controller.value.isRunning) {
           unawaited(controller.start());
         }
