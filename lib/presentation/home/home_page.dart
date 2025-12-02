@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/core/const/app_const.dart';
 import 'package:jimpitan/core/const/prefs_key.dart';
 import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
 import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
@@ -71,7 +72,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: user != null ? const HomeAppBar() : null,
       floatingActionButton: user != null
           ? FloatingActionButton(
-              onPressed: () => context.go('/scanQr'),
+              onPressed: () => context.pushNamed(AppConst.scanQrRouteName),
               child: const Icon(Icons.add),
             )
           : null,
