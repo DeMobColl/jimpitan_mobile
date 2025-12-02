@@ -6,12 +6,18 @@ part of 'qr_scan_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$qrScanNotifierHash() => r'5a67166ed582088c51f132687e67d341c5fcfb90';
+String _$qrScanNotifierHash() => r'ca516356e764c55c6362787348652d44b88b6b5a';
 
-/// See also [QrScanNotifier].
+/// Provider to scan QR code and fetch customer data
+/// Returns AsyncValue<QrScanCustomerResponse> for automatic loading/error/data state
+///
+/// Copied from [QrScanNotifier].
 @ProviderFor(QrScanNotifier)
 final qrScanNotifierProvider =
-    AutoDisposeNotifierProvider<QrScanNotifier, QrScanState>.internal(
+    AutoDisposeNotifierProvider<
+      QrScanNotifier,
+      AsyncValue<QrScanCustomerResponse?>
+    >.internal(
       QrScanNotifier.new,
       name: r'qrScanNotifierProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +27,7 @@ final qrScanNotifierProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$QrScanNotifier = AutoDisposeNotifier<QrScanState>;
+typedef _$QrScanNotifier =
+    AutoDisposeNotifier<AsyncValue<QrScanCustomerResponse?>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

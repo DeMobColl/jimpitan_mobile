@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/helper/qr_camera_helper.dart';
+import 'package:jimpitan/presentation/qr_scan_customer/helper/scan_qr_dialogs_helper.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/providers/qr_scan_provider.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/widgets/qr_scanner_overlay.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-/// Example implementation of QR Scan Page with the new provider
-/// This shows how to integrate the QrScanNotifier provider
+/// Example implementation of QR Scan Page with best practices
+/// - Provider only handles data/logic (no BuildContext, no dialogs)
+/// - UI layer handles dialogs and camera control
+/// - Uses AsyncValue for automatic loading/error/data state
 class QrScanPageExample extends ConsumerStatefulWidget {
   const QrScanPageExample({super.key});
 
@@ -42,12 +45,85 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
     );
 
     _cameraHelper.initialize();
+
+    // Listen to provider state changes to show dialogs
+    ref.listenManual(qrScanNotifierProvider, (previous, next) {
+      _handleStateChange(previous, next);
+    });
   }
 
   @override
   void dispose() {
     _cameraHelper.dispose();
     super.dispose();
+  }
+
+  /// Handle state changes from provider
+  /// This is where we show dialogs based on state
+  void _handleStateChange(
+    AsyncValue<dynamic>? previous,
+    AsyncValue<dynamic> next,
+  ) {
+    next.when(
+      data: (response) {
+        // Close loading dialog if it was showing
+        if (previous?.isLoading == true && mounted) {
+          Navigator.of(context).pop();
+        }
+
+        if (response != null) {
+          if (response.isSuccess && response.data != null) {
+            // Show success dialog
+            if (mounted) {
+              ScanQrDialogsHelper.showAttendanceSuccessDialog(context);
+            }
+          } else {
+            // Show error dialog
+            if (mounted) {
+              ScanQrDialogsHelper.showAttendanceErrorDialog(
+                context,
+                response.data?.name ??
+                    'QR Code tidak valid atau sudah kadaluarsa',
+                _restartCamera,
+              );
+            }
+          }
+        }
+      },
+      loading: () {
+        // Pause camera when loading
+        _controller.stop();
+
+        // Show loading dialog
+        if (mounted) {
+          ScanQrDialogsHelper.showLoadingDialog(
+            context,
+            'Memproses QR Code...',
+          );
+        }
+      },
+      error: (error, _) {
+        // Close loading dialog if it was showing
+        if (previous?.isLoading == true && mounted) {
+          Navigator.of(context).pop();
+        }
+
+        // Show error dialog
+        if (mounted) {
+          ScanQrDialogsHelper.showAttendanceErrorDialog(
+            context,
+            'Terjadi kesalahan: ${error.toString()}',
+            _restartCamera,
+          );
+        }
+      },
+    );
+  }
+
+  /// Restart camera after error
+  void _restartCamera() async {
+    ref.read(qrScanNotifierProvider.notifier).reset();
+    await _controller.start();
   }
 
   void _toggleTorch() async {
@@ -67,28 +143,18 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
 
   /// Handle QR code detection
   void _onDetect(BarcodeCapture capture) {
-    final List<Barcode> barcodes = capture.barcodes;
-
-    // Get the scan state to check if processing
     final scanState = ref.read(qrScanNotifierProvider);
 
-    // Don't process if already processing
-    if (scanState.isProcessing) return;
+    // Don't process if already loading
+    if (scanState.isLoading) return;
 
+    final barcodes = capture.barcodes;
     for (final barcode in barcodes) {
-      final String? code = barcode.rawValue;
+      final code = barcode.rawValue;
 
       if (code != null && code.isNotEmpty) {
-        // Use the provider to scan QR code
-        ref
-            .read(qrScanNotifierProvider.notifier)
-            .scanQrCode(
-              context: context,
-              qrHash: code,
-              cameraController: _controller,
-            );
-
-        // Break after first valid code
+        // Trigger scan - provider handles the logic
+        ref.read(qrScanNotifierProvider.notifier).scanQrCode(code);
         break;
       }
     }
@@ -96,7 +162,6 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
 
   @override
   Widget build(BuildContext context) {
-    // Watch the scan state
     final scanState = ref.watch(qrScanNotifierProvider);
 
     return Scaffold(
@@ -129,8 +194,8 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
           MobileScanner(controller: _controller, onDetect: _onDetect),
           // QR Scanner Overlay
           const QRScannerOverlay(),
-          // Status indicator (optional)
-          if (scanState.isProcessing)
+          // Optional: Show loading indicator on screen
+          if (scanState.isLoading)
             Positioned(
               bottom: 100,
               left: 0,
@@ -149,14 +214,6 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                    SizedBox(width: 12),
-                    Text(
-                      'Memproses QR Code...',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
                     ),
                   ],
                 ),
