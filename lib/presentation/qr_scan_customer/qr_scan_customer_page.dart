@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/core/const/app_const.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/helper/qr_camera_helper.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/helper/scan_qr_dialogs_helper.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/providers/qr_scan_provider.dart';
@@ -69,14 +70,14 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
 
         if (response != null) {
           if (response.isSuccess && response.data != null) {
-            // Show success dialog
+            // Navigate automatically to input page on success
             if (mounted) {
-              ScanQrDialogsHelper.showAttendanceSuccessDialog(context);
+              context.goNamed(AppConst.inputRouteName);
             }
           } else {
             // Show error dialog
             if (mounted) {
-              ScanQrDialogsHelper.showAttendanceErrorDialog(
+              QRScanDialogsHelper.showErrorDialog(
                 context,
                 response.data?.name ??
                     'QR Code tidak valid atau sudah kadaluarsa',
@@ -92,7 +93,7 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
 
         // Show loading dialog
         if (mounted) {
-          ScanQrDialogsHelper.showLoadingDialog(
+          QRScanDialogsHelper.showLoadingDialog(
             context,
             'Memproses QR Code...',
           );
@@ -106,7 +107,7 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
 
         // Show error dialog
         if (mounted) {
-          ScanQrDialogsHelper.showAttendanceErrorDialog(
+          QRScanDialogsHelper.showErrorDialog(
             context,
             'Terjadi kesalahan: ${error.toString()}',
             _restartCamera,
@@ -187,10 +188,11 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
           // Camera Scanner
           MobileScanner(
             controller: _controller,
-             onDetect: _onDetect,
-             errorBuilder: (context, error) => _cameraHelper.buildErrorWidget(error),
-             placeholderBuilder: (context) => _cameraHelper.buildPlaceholder(),
-            ),
+            onDetect: _onDetect,
+            errorBuilder: (context, error) =>
+                _cameraHelper.buildErrorWidget(error),
+            placeholderBuilder: (context) => _cameraHelper.buildPlaceholder(),
+          ),
           // QR Scanner Overlay
           const QRScannerOverlay(),
         ],

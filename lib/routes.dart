@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:jimpitan/core/const/app_const.dart';
-import 'package:jimpitan/presentation/qr_scan_customer/qr_scan_page_example.dart';
+import 'package:jimpitan/presentation/qr_scan_customer/qr_scan_customer_page.dart';
 import 'presentation/splash/splash_page.dart';
 import 'presentation/home/home_page.dart';
 import 'presentation/input/input_page.dart';

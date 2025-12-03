@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jimpitan/presentation/auth/provider/auth_notifier.dart';
+import 'package:jimpitan/core/const/prefs_key.dart';
+import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
+import 'package:jimpitan/presentation/qr_scan_customer/providers/qr_scan_provider.dart';
 import 'input_controller.dart';
 import 'widgets/input_header.dart';
 import 'widgets/input_text_field.dart';
@@ -17,47 +19,50 @@ class InputPage extends ConsumerStatefulWidget {
 class _InputPageState extends ConsumerState<InputPage> {
   final _formKey = GlobalKey<FormState>();
   final _namaController = TextEditingController();
+  final _blokController = TextEditingController();
   final _nominalController = TextEditingController();
-  final _petugasController = TextEditingController();
-  final _usernameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Check authentication on page load
+    // Initialize data on page load
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final authState = ref.read(authNotifierProvider);
-      final user = authState.value;
+      final prefsHelper = ref.read(sharedPrefsHelperProvider);
+      final isLoggedIn = prefsHelper.getBool(PrefsKey.isLoggedIn) ?? false;
 
-      if (user == null) {
+      if (!isLoggedIn) {
         context.go('/login');
         return;
       }
 
-      // Initialize controllers with user data
-      _namaController.text = 'Firman';
+
+      // Get QR scan data
+      final qrScanState = ref.read(qrScanNotifierProvider);
+      final qrData = qrScanState.value?.data;
+
+      // Initialize controllers
+      _namaController.text = qrData?.name ?? '';
+      _blokController.text = qrData?.block ?? '';
       _nominalController.text = '';
-      _petugasController.text = user.name;
-      _usernameController.text = user.username;
     });
   }
 
   @override
   void dispose() {
     _namaController.dispose();
+    _blokController.dispose();
     _nominalController.dispose();
-    _petugasController.dispose();
-    _usernameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authNotifierProvider);
-    final user = authState.value;
+    // Check if user is logged in from shared preferences
+    final prefsHelper = ref.watch(sharedPrefsHelperProvider);
+    final isLoggedIn = prefsHelper.getBool(PrefsKey.isLoggedIn) ?? false;
 
     // Redirect if not authenticated
-    if (user == null) {
+    if (!isLoggedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.go('/login');
       });
@@ -75,10 +80,9 @@ class _InputPageState extends ConsumerState<InputPage> {
             backgroundColor: Colors.green,
           ),
         );
-        // Clear form
-        _namaController.clear();
+        // Clear only nominal field, keep customer data
         _nominalController.clear();
-        // Keep petugas and username as they are from logged in user
+        // Keep nama, blok, petugas, and username
 
         // Reset state after showing success
         Future.delayed(const Duration(seconds: 1), () {
@@ -99,23 +103,9 @@ class _InputPageState extends ConsumerState<InputPage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        actions: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Center(
-              child: Text(
-                user.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -131,8 +121,9 @@ class _InputPageState extends ConsumerState<InputPage> {
                   InputTextField(
                     controller: _namaController,
                     label: 'Nama',
-                    hintText: 'Enter name',
+                    hintText: 'Nama pelanggan',
                     prefixIcon: Icons.person,
+                    readOnly: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Nama tidak boleh kosong';
@@ -142,9 +133,23 @@ class _InputPageState extends ConsumerState<InputPage> {
                   ),
                   const SizedBox(height: 20),
                   InputTextField(
+                    controller: _blokController,
+                    label: 'Blok',
+                    hintText: 'Blok pelanggan',
+                    prefixIcon: Icons.home_work,
+                    readOnly: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Blok tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  InputTextField(
                     controller: _nominalController,
                     label: 'Nominal (Rp)',
-                    hintText: 'Enter amount',
+                    hintText: 'Masukkan nominal jimpitan',
                     prefixIcon: Icons.payments,
                     keyboardType: TextInputType.number,
                     validator: (value) {
@@ -157,34 +162,8 @@ class _InputPageState extends ConsumerState<InputPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20),
-                  InputTextField(
-                    controller: _petugasController,
-                    label: 'Petugas',
-                    prefixIcon: Icons.admin_panel_settings,
-                    readOnly: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Petugas tidak boleh kosong';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  InputTextField(
-                    controller: _usernameController,
-                    label: 'Username',
-                    prefixIcon: Icons.account_circle,
-                    readOnly: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Username tidak boleh kosong';
-                      }
-                      return null;
-                    },
-                  ),
                   const SizedBox(height: 32),
-                  SubmitButton(onPressed: _submitForm),
+                  SubmitButton(onPressed: () {},),
                 ],
               ),
             ),
@@ -194,16 +173,4 @@ class _InputPageState extends ConsumerState<InputPage> {
     );
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      ref
-          .read(inputNominalControllerProvider.notifier)
-          .submitInputNominal(
-            nama: _namaController.text,
-            nominal: _nominalController.text,
-            petugas: _petugasController.text,
-            username: _usernameController.text,
-          );
-    }
-  }
 }
