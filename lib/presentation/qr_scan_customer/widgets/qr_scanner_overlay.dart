@@ -72,10 +72,10 @@ class _QRScannerOverlayState extends State<QRScannerOverlay>
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               margin: const EdgeInsets.symmetric(horizontal: 40),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.8),
+                color: Colors.black.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.3),
+                  color: Colors.white.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),

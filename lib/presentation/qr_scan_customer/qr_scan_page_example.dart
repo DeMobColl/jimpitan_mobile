@@ -7,19 +7,15 @@ import 'package:jimpitan/presentation/qr_scan_customer/providers/qr_scan_provide
 import 'package:jimpitan/presentation/qr_scan_customer/widgets/qr_scanner_overlay.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-/// Example implementation of QR Scan Page with best practices
-/// - Provider only handles data/logic (no BuildContext, no dialogs)
-/// - UI layer handles dialogs and camera control
-/// - Uses AsyncValue for automatic loading/error/data state
-class QrScanPageExample extends ConsumerStatefulWidget {
-  const QrScanPageExample({super.key});
+class QrScanCustomerPage extends ConsumerStatefulWidget {
+  const QrScanCustomerPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _QrScanPageExampleState();
 }
 
-class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
+class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
   final MobileScannerController _controller = MobileScannerController(
     autoStart: false,
   );
@@ -162,8 +158,6 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
 
   @override
   Widget build(BuildContext context) {
-    final scanState = ref.watch(qrScanNotifierProvider);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -191,34 +185,14 @@ class _QrScanPageExampleState extends ConsumerState<QrScanPageExample> {
       body: Stack(
         children: [
           // Camera Scanner
-          MobileScanner(controller: _controller, onDetect: _onDetect),
+          MobileScanner(
+            controller: _controller,
+             onDetect: _onDetect,
+             errorBuilder: (context, error) => _cameraHelper.buildErrorWidget(error),
+             placeholderBuilder: (context) => _cameraHelper.buildPlaceholder(),
+            ),
           // QR Scanner Overlay
           const QRScannerOverlay(),
-          // Optional: Show loading indicator on screen
-          if (scanState.isLoading)
-            Positioned(
-              bottom: 100,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.symmetric(horizontal: 32),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ],
-                ),
-              ),
-            ),
         ],
       ),
     );

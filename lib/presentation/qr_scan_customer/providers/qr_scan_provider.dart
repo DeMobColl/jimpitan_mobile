@@ -7,8 +7,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'qr_scan_provider.g.dart';
 
-/// Provider to scan QR code and fetch customer data
-/// Returns AsyncValue<QrScanCustomerResponse> for automatic loading/error/data state
 @riverpod
 class QrScanNotifier extends _$QrScanNotifier {
   @override

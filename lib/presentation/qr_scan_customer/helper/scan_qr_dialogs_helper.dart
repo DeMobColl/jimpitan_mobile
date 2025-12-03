@@ -193,20 +193,4 @@ class ScanQrDialogsHelper {
         ? const Color(0xFFFFB74D) // Light orange for dark mode
         : const Color(0xFFFF9800); // Orange for light mode
   }
-
-  static Color _getErrorBackgroundColor(bool isDarkMode) {
-    return isDarkMode
-        ? const Color(0xFF5C1E1E).withValues(alpha: 0.3) // Dark red background
-        : const Color(0xFFFFEBEE); // Light red background
-  }
-
-  static Color _getErrorBorderColor(bool isDarkMode) {
-    return isDarkMode
-        ? const Color(0xFFEF5350).withValues(
-          alpha: 0.5,
-        ) // Semi-transparent red border
-        : const Color(
-          0xFFF44336,
-        ).withValues(alpha: 0.3); // Semi-transparent red border
-  }
 }
