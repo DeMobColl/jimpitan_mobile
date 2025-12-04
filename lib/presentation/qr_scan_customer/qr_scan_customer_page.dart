@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -67,6 +69,10 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
         if (previous?.isLoading == true && mounted) {
           Navigator.of(context).pop();
         }
+
+        log(
+          'QR Scan Response: isSuccess=${response?.isSuccess}, data=${response?.data}',
+        );
 
         if (response != null) {
           if (response.isSuccess && response.data != null) {

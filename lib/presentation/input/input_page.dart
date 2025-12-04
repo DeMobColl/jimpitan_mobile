@@ -68,125 +68,19 @@ class _InputPageState extends ConsumerState<InputPage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Success Icon
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade50,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.check_circle,
-                  color: Colors.green.shade600,
-                  size: 64,
-                ),
-              ),
-              const SizedBox(height: 24),
-              // Success Title
-              const Text(
-                'Input Berhasil!',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              // Success Message
-              Text(
-                message,
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              // Customer Info
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildInfoRow(Icons.person, 'Nama', _namaController.text),
-                    const SizedBox(height: 4),
-                    _buildInfoRow(
-                      Icons.home_work,
-                      'Blok',
-                      _blokController.text,
-                    ),
-                    const SizedBox(height: 4),
-                    _buildInfoRow(
-                      Icons.payments,
-                      'Nominal',
-                      'Rp ${_nominalController.text}',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              // OK Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Reset state
-                    ref
-                        .read(inputNominalControllerProvider.notifier)
-                        .resetState();
-                    // Close dialog
-                    Navigator.of(dialogContext).pop();
-                    // Navigate to home page
-                    context.goNamed(AppConst.homeRouteName);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green.shade600,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Kembali ke Beranda',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            ],
-          ),
+        return _SuccessDialogContent(
+          message: message,
+          nama: _namaController.text,
+          blok: _blokController.text,
+          nominal: _nominalController.text,
+          onNavigate: () {
+            // Reset state
+            ref.read(inputNominalControllerProvider.notifier).resetState();
+            // Navigate to home page
+            context.goNamed(AppConst.homeRouteName);
+          },
         );
       },
-    );
-  }
-
-  /// Build info row for success dialog
-  Widget _buildInfoRow(IconData icon, String label, String value) {
-    return Row(
-      children: [
-        Icon(icon, size: 16, color: Colors.blue.shade700),
-        const SizedBox(width: 8),
-        Text(
-          '$label: ',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade700,
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
     );
   }
 
@@ -338,6 +232,194 @@ class _InputPageState extends ConsumerState<InputPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Success Dialog with auto-dismiss countdown
+class _SuccessDialogContent extends StatefulWidget {
+  final String message;
+  final String nama;
+  final String blok;
+  final String nominal;
+  final VoidCallback onNavigate;
+
+  const _SuccessDialogContent({
+    required this.message,
+    required this.nama,
+    required this.blok,
+    required this.nominal,
+    required this.onNavigate,
+  });
+
+  @override
+  State<_SuccessDialogContent> createState() => _SuccessDialogContentState();
+}
+
+class _SuccessDialogContentState extends State<_SuccessDialogContent> {
+  int _countdown = 3;
+  bool _isNavigating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
+
+  void _startCountdown() {
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted && _countdown > 1) {
+        setState(() => _countdown--);
+        _startCountdown();
+      } else if (mounted && _countdown == 1) {
+        _navigateToHome();
+      }
+    });
+  }
+
+  void _navigateToHome() {
+    if (_isNavigating) return;
+    setState(() => _isNavigating = true);
+
+    // Close dialog first
+    Navigator.of(context).pop();
+    // Then navigate
+    widget.onNavigate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Success Icon with countdown
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Countdown circle indicator
+              SizedBox(
+                width: 96,
+                height: 96,
+                child: CircularProgressIndicator(
+                  value: _countdown / 3,
+                  strokeWidth: 3,
+                  backgroundColor: Colors.green.shade100,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.green.shade300,
+                  ),
+                ),
+              ),
+              // Success Icon
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.green.shade600,
+                  size: 48,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          // Success Title
+          const Text(
+            'Input Berhasil!',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          // Success Message
+          Text(
+            widget.message,
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          // Customer Info
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.blue.shade50,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildInfoRow(Icons.person, 'Nama', widget.nama),
+                const SizedBox(height: 4),
+                _buildInfoRow(Icons.home_work, 'Blok', widget.blok),
+                const SizedBox(height: 4),
+                _buildInfoRow(
+                  Icons.payments,
+                  'Nominal',
+                  'Rp ${widget.nominal}',
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          // Countdown text
+          Text(
+            'Kembali ke beranda dalam $_countdown detik...',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade600,
+              fontStyle: FontStyle.italic,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          // Button to skip countdown
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _isNavigating ? null : _navigateToHome,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green.shade600,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Kembali Sekarang',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.blue.shade700),
+        const SizedBox(width: 8),
+        Text(
+          '$label: ',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey.shade700,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }
