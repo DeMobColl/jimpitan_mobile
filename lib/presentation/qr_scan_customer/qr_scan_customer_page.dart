@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jimpitan/core/const/app_const.dart';
+import 'package:jimpitan/domain/entities/qr_scan_customer/qr_scan_customer_response.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/helper/qr_camera_helper.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/helper/scan_qr_dialogs_helper.dart';
 import 'package:jimpitan/presentation/qr_scan_customer/providers/qr_scan_provider.dart';
@@ -60,8 +61,8 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
   /// Handle state changes from provider
   /// This is where we show dialogs based on state
   void _handleStateChange(
-    AsyncValue<dynamic>? previous,
-    AsyncValue<dynamic> next,
+    AsyncValue<QrScanCustomerResponse?>? previous,
+    AsyncValue<QrScanCustomerResponse?> next,
   ) {
     next.when(
       data: (response) {

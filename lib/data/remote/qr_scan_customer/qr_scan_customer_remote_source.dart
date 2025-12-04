@@ -33,7 +33,9 @@ class QrScanCustomerRemoteDataSourceImpl
         ),
       );
 
-      return QrScanCustomerResponseModel.fromJson(response.data);
+      return QrScanCustomerResponseModel.fromJson(
+        response.data,
+      );
     } on DioException catch (e) {
       if (e.response != null) {
         log('[QR SCAN] DioException: ${e.message}');
