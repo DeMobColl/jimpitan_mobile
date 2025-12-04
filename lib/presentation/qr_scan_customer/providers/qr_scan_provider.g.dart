@@ -8,10 +8,7 @@ part of 'qr_scan_provider.dart';
 
 String _$qrScanNotifierHash() => r'ca516356e764c55c6362787348652d44b88b6b5a';
 
-/// Provider to scan QR code and fetch customer data
-/// Returns AsyncValue<QrScanCustomerResponse> for automatic loading/error/data state
-///
-/// Copied from [QrScanNotifier].
+/// See also [QrScanNotifier].
 @ProviderFor(QrScanNotifier)
 final qrScanNotifierProvider =
     AutoDisposeNotifierProvider<

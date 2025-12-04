@@ -30,11 +30,11 @@ _$QrScanCustomerDataImpl _$$QrScanCustomerDataImplFromJson(
   Map<String, dynamic> json,
 ) => _$QrScanCustomerDataImpl(
   id: json['id'] as String?,
-  block: json['block'] as String?,
-  name: json['name'] as String?,
+  block: json['blok'] as String?,
+  name: json['nama'],
   qrHash: json['qrHash'] as String?,
   createdAt: json['createdAt'] as String?,
-  totalDeposit: (json['totalDeposit'] as num?)?.toInt(),
+  totalDeposit: (json['totalSetoran'] as num?)?.toInt(),
   lastTransaction: json['lastTransaction'] as String?,
 );
 
@@ -42,11 +42,11 @@ Map<String, dynamic> _$$QrScanCustomerDataImplToJson(
   _$QrScanCustomerDataImpl instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'block': instance.block,
-  'name': instance.name,
+  'blok': instance.block,
+  'nama': instance.name,
   'qrHash': instance.qrHash,
   'createdAt': instance.createdAt,
-  'totalDeposit': instance.totalDeposit,
+  'totalSetoran': instance.totalDeposit,
   'lastTransaction': instance.lastTransaction,
 };
 

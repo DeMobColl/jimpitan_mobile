@@ -19,11 +19,11 @@ abstract class QrScanCustomerResponseModel with _$QrScanCustomerResponseModel {
 abstract class QrScanCustomerData with _$QrScanCustomerData {
   const factory QrScanCustomerData({
     required String? id,
-    required String? block,
-    required String? name,
+    @JsonKey(name: 'blok') String? block,
+    @JsonKey(name: 'nama') name,
     required String? qrHash,
     required String? createdAt,
-    required int? totalDeposit,
+    @JsonKey(name: 'totalSetoran') int? totalDeposit,
     required String? lastTransaction,
   }) = _QrScanCustomerData;
 

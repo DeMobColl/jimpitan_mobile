@@ -1,6 +1,6 @@
 class AppConst {
   AppConst._();
-  static const baseUrl = 'https://script.google.com/macros/s/AKfycbw5pqaREdIKGChIY7IUUbM2xRdZRiG0uYxzG_F9MJvXdOq7VpJH-9g5KRl6zu285OLTKg/exec';
+  static const baseUrl = 'https://script.google.com/macros/s/AKfycbyWCXHbwshp_OusOPoId3VJMk3JkiJL3stgwgC2xHTpNTOj0ms1W4PRAy4yKx_GUTvxXw/exec';
 
   /// App Routes
   static const splashRoute = '/splash';
@@ -14,7 +14,7 @@ class AppConst {
 
   static const inputRoute = '/input';
   static const inputRouteName = 'input';
-  
+
   static const scanQrRoute = '/scanQr';
   static const scanQrRouteName = 'scanQr';
 }

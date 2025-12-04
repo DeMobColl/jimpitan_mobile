@@ -280,10 +280,13 @@ QrScanCustomerData _$QrScanCustomerDataFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$QrScanCustomerData {
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'blok')
   String? get block => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nama')
+  dynamic get name => throw _privateConstructorUsedError;
   String? get qrHash => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'totalSetoran')
   int? get totalDeposit => throw _privateConstructorUsedError;
   String? get lastTransaction => throw _privateConstructorUsedError;
 
@@ -306,11 +309,11 @@ abstract class $QrScanCustomerDataCopyWith<$Res> {
   @useResult
   $Res call({
     String? id,
-    String? block,
-    String? name,
+    @JsonKey(name: 'blok') String? block,
+    @JsonKey(name: 'nama') dynamic name,
     String? qrHash,
     String? createdAt,
-    int? totalDeposit,
+    @JsonKey(name: 'totalSetoran') int? totalDeposit,
     String? lastTransaction,
   });
 }
@@ -351,7 +354,7 @@ class _$QrScanCustomerDataCopyWithImpl<$Res, $Val extends QrScanCustomerData>
             name: freezed == name
                 ? _value.name
                 : name // ignore: cast_nullable_to_non_nullable
-                      as String?,
+                      as dynamic,
             qrHash: freezed == qrHash
                 ? _value.qrHash
                 : qrHash // ignore: cast_nullable_to_non_nullable
@@ -385,11 +388,11 @@ abstract class _$$QrScanCustomerDataImplCopyWith<$Res>
   @useResult
   $Res call({
     String? id,
-    String? block,
-    String? name,
+    @JsonKey(name: 'blok') String? block,
+    @JsonKey(name: 'nama') dynamic name,
     String? qrHash,
     String? createdAt,
-    int? totalDeposit,
+    @JsonKey(name: 'totalSetoran') int? totalDeposit,
     String? lastTransaction,
   });
 }
@@ -426,10 +429,7 @@ class __$$QrScanCustomerDataImplCopyWithImpl<$Res>
             ? _value.block
             : block // ignore: cast_nullable_to_non_nullable
                   as String?,
-        name: freezed == name
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                  as String?,
+        name: freezed == name ? _value.name! : name,
         qrHash: freezed == qrHash
             ? _value.qrHash
             : qrHash // ignore: cast_nullable_to_non_nullable
@@ -456,11 +456,11 @@ class __$$QrScanCustomerDataImplCopyWithImpl<$Res>
 class _$QrScanCustomerDataImpl implements _QrScanCustomerData {
   const _$QrScanCustomerDataImpl({
     required this.id,
-    required this.block,
-    required this.name,
+    @JsonKey(name: 'blok') this.block,
+    @JsonKey(name: 'nama') this.name,
     required this.qrHash,
     required this.createdAt,
-    required this.totalDeposit,
+    @JsonKey(name: 'totalSetoran') this.totalDeposit,
     required this.lastTransaction,
   });
 
@@ -470,14 +470,17 @@ class _$QrScanCustomerDataImpl implements _QrScanCustomerData {
   @override
   final String? id;
   @override
+  @JsonKey(name: 'blok')
   final String? block;
   @override
-  final String? name;
+  @JsonKey(name: 'nama')
+  final dynamic name;
   @override
   final String? qrHash;
   @override
   final String? createdAt;
   @override
+  @JsonKey(name: 'totalSetoran')
   final int? totalDeposit;
   @override
   final String? lastTransaction;
@@ -494,7 +497,7 @@ class _$QrScanCustomerDataImpl implements _QrScanCustomerData {
             other is _$QrScanCustomerDataImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.block, block) || other.block == block) &&
-            (identical(other.name, name) || other.name == name) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
             (identical(other.qrHash, qrHash) || other.qrHash == qrHash) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -510,7 +513,7 @@ class _$QrScanCustomerDataImpl implements _QrScanCustomerData {
     runtimeType,
     id,
     block,
-    name,
+    const DeepCollectionEquality().hash(name),
     qrHash,
     createdAt,
     totalDeposit,
@@ -537,11 +540,11 @@ class _$QrScanCustomerDataImpl implements _QrScanCustomerData {
 abstract class _QrScanCustomerData implements QrScanCustomerData {
   const factory _QrScanCustomerData({
     required final String? id,
-    required final String? block,
-    required final String? name,
+    @JsonKey(name: 'blok') final String? block,
+    @JsonKey(name: 'nama') final dynamic name,
     required final String? qrHash,
     required final String? createdAt,
-    required final int? totalDeposit,
+    @JsonKey(name: 'totalSetoran') final int? totalDeposit,
     required final String? lastTransaction,
   }) = _$QrScanCustomerDataImpl;
 
@@ -551,14 +554,17 @@ abstract class _QrScanCustomerData implements QrScanCustomerData {
   @override
   String? get id;
   @override
+  @JsonKey(name: 'blok')
   String? get block;
   @override
-  String? get name;
+  @JsonKey(name: 'nama')
+  dynamic get name;
   @override
   String? get qrHash;
   @override
   String? get createdAt;
   @override
+  @JsonKey(name: 'totalSetoran')
   int? get totalDeposit;
   @override
   String? get lastTransaction;

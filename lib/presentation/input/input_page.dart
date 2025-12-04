@@ -35,7 +35,6 @@ class _InputPageState extends ConsumerState<InputPage> {
         return;
       }
 
-
       // Get QR scan data
       final qrScanState = ref.read(qrScanNotifierProvider);
       final qrData = qrScanState.value?.data;
@@ -100,8 +99,8 @@ class _InputPageState extends ConsumerState<InputPage> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        title: const Text('Input Nominal Jimpitan'),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
@@ -163,7 +162,7 @@ class _InputPageState extends ConsumerState<InputPage> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  SubmitButton(onPressed: () {},),
+                  SubmitButton(onPressed: () {}),
                 ],
               ),
             ),
@@ -172,5 +171,4 @@ class _InputPageState extends ConsumerState<InputPage> {
       ),
     );
   }
-
 }
