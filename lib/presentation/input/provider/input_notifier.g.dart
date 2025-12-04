@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'input_controller.dart';
+part of 'input_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator

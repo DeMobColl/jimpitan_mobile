@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../domain/entities/input/input_nominal_request.dart';
-import '../../domain/entities/input/input_nominal_response.dart';
-import '../../domain/usecases/input/submit_input_nominal_usecase.dart';
+import '../../../domain/entities/input/input_nominal_request.dart';
+import '../../../domain/entities/input/input_nominal_response.dart';
+import '../../../domain/usecases/input/submit_input_nominal_usecase.dart';
 
-part 'input_controller.g.dart';
+part 'input_notifier.g.dart';
 
 // Input controller using AsyncNotifier for built-in async state management
 @riverpod

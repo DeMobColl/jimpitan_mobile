@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jimpitan/core/const/app_const.dart';
 import 'package:jimpitan/core/const/prefs_key.dart';
 import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
 import 'package:jimpitan/domain/entities/input/input_nominal_response.dart';
-import 'input_controller.dart';
+import 'provider/input_notifier.dart';
 import 'widgets/input_header.dart';
 import 'widgets/input_text_field.dart';
 import 'widgets/submit_button.dart';
@@ -61,6 +62,134 @@ class _InputPageState extends ConsumerState<InputPage> {
     super.dispose();
   }
 
+  /// Show success dialog and navigate to home page
+  void _showSuccessDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Success Icon
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.green.shade600,
+                  size: 64,
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Success Title
+              const Text(
+                'Input Berhasil!',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              // Success Message
+              Text(
+                message,
+                style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              // Customer Info
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow(Icons.person, 'Nama', _namaController.text),
+                    const SizedBox(height: 4),
+                    _buildInfoRow(
+                      Icons.home_work,
+                      'Blok',
+                      _blokController.text,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildInfoRow(
+                      Icons.payments,
+                      'Nominal',
+                      'Rp ${_nominalController.text}',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              // OK Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Reset state
+                    ref
+                        .read(inputNominalControllerProvider.notifier)
+                        .resetState();
+                    // Close dialog
+                    Navigator.of(dialogContext).pop();
+                    // Navigate to home page
+                    context.goNamed(AppConst.homeRouteName);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green.shade600,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Kembali ke Beranda',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  /// Build info row for success dialog
+  Widget _buildInfoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.blue.shade700),
+        const SizedBox(width: 8),
+        Text(
+          '$label: ',
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey.shade700,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Check if user is logged in from shared preferences
@@ -82,19 +211,11 @@ class _InputPageState extends ConsumerState<InputPage> {
           data: (response) {
             log('[INPUT PAGE] Submission response: ${response?.toString()}');
             if (response != null && response.isSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(response.message ?? 'Data berhasil dikirim!'),
-                  backgroundColor: Colors.green,
-                ),
+              // Show success dialog with information
+              _showSuccessDialog(
+                context,
+                response.message ?? 'Data berhasil dikirim!',
               );
-              // Clear only nominal field, keep customer data
-              _nominalController.clear();
-
-              // Reset state after showing success
-              Future.delayed(const Duration(seconds: 1), () {
-                ref.read(inputNominalControllerProvider.notifier).resetState();
-              });
             } else if (response != null && !response.isSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

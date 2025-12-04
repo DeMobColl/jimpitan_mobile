@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../input_controller.dart';
+import '../provider/input_notifier.dart';
 
 class SubmitButton extends ConsumerWidget {
   final VoidCallback onPressed;
