@@ -27,7 +27,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppConst.inputRoute,
       name: AppConst.inputRouteName,
-      builder: (context, state) => const InputPage(),
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return InputPage(
+          customerId: extra?['customerId'] as String?,
+          customerName: extra?['customerName'] as String?,
+          customerBlock: extra?['customerBlock'] as String?,
+        );
+      },
     ),
     GoRoute(
       path: AppConst.scanQrRoute,

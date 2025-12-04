@@ -23,12 +23,18 @@ InputNominalRequestModel _$InputNominalRequestModelFromJson(
 
 /// @nodoc
 mixin _$InputNominalRequestModel {
+  @JsonKey(name: 'action')
+  String get action => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mobileToken')
+  String get mobileToken => throw _privateConstructorUsedError;
+  @JsonKey(name: 'customer_id')
+  String get customerId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'id')
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nama')
   String get nama => throw _privateConstructorUsedError;
-  String get nominal => throw _privateConstructorUsedError;
-  String get waktu => throw _privateConstructorUsedError;
-  String get petugas => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nominal')
+  int get nominal => throw _privateConstructorUsedError;
 
   /// Serializes this InputNominalRequestModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,12 +54,12 @@ abstract class $InputNominalRequestModelCopyWith<$Res> {
   ) = _$InputNominalRequestModelCopyWithImpl<$Res, InputNominalRequestModel>;
   @useResult
   $Res call({
-    String id,
-    String nama,
-    String nominal,
-    String waktu,
-    String petugas,
-    String username,
+    @JsonKey(name: 'action') String action,
+    @JsonKey(name: 'mobileToken') String mobileToken,
+    @JsonKey(name: 'customer_id') String customerId,
+    @JsonKey(name: 'id') String id,
+    @JsonKey(name: 'nama') String nama,
+    @JsonKey(name: 'nominal') int nominal,
   });
 }
 
@@ -75,15 +81,27 @@ class _$InputNominalRequestModelCopyWithImpl<
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? action = null,
+    Object? mobileToken = null,
+    Object? customerId = null,
     Object? id = null,
     Object? nama = null,
     Object? nominal = null,
-    Object? waktu = null,
-    Object? petugas = null,
-    Object? username = null,
   }) {
     return _then(
       _value.copyWith(
+            action: null == action
+                ? _value.action
+                : action // ignore: cast_nullable_to_non_nullable
+                      as String,
+            mobileToken: null == mobileToken
+                ? _value.mobileToken
+                : mobileToken // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
             id: null == id
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
@@ -95,19 +113,7 @@ class _$InputNominalRequestModelCopyWithImpl<
             nominal: null == nominal
                 ? _value.nominal
                 : nominal // ignore: cast_nullable_to_non_nullable
-                      as String,
-            waktu: null == waktu
-                ? _value.waktu
-                : waktu // ignore: cast_nullable_to_non_nullable
-                      as String,
-            petugas: null == petugas
-                ? _value.petugas
-                : petugas // ignore: cast_nullable_to_non_nullable
-                      as String,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as int,
           )
           as $Val,
     );
@@ -124,12 +130,12 @@ abstract class _$$InputNominalRequestModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
-    String nama,
-    String nominal,
-    String waktu,
-    String petugas,
-    String username,
+    @JsonKey(name: 'action') String action,
+    @JsonKey(name: 'mobileToken') String mobileToken,
+    @JsonKey(name: 'customer_id') String customerId,
+    @JsonKey(name: 'id') String id,
+    @JsonKey(name: 'nama') String nama,
+    @JsonKey(name: 'nominal') int nominal,
   });
 }
 
@@ -151,15 +157,27 @@ class __$$InputNominalRequestModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? action = null,
+    Object? mobileToken = null,
+    Object? customerId = null,
     Object? id = null,
     Object? nama = null,
     Object? nominal = null,
-    Object? waktu = null,
-    Object? petugas = null,
-    Object? username = null,
   }) {
     return _then(
       _$InputNominalRequestModelImpl(
+        action: null == action
+            ? _value.action
+            : action // ignore: cast_nullable_to_non_nullable
+                  as String,
+        mobileToken: null == mobileToken
+            ? _value.mobileToken
+            : mobileToken // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
         id: null == id
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
@@ -171,19 +189,7 @@ class __$$InputNominalRequestModelImplCopyWithImpl<$Res>
         nominal: null == nominal
             ? _value.nominal
             : nominal // ignore: cast_nullable_to_non_nullable
-                  as String,
-        waktu: null == waktu
-            ? _value.waktu
-            : waktu // ignore: cast_nullable_to_non_nullable
-                  as String,
-        petugas: null == petugas
-            ? _value.petugas
-            : petugas // ignore: cast_nullable_to_non_nullable
-                  as String,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as int,
       ),
     );
   }
@@ -193,33 +199,39 @@ class __$$InputNominalRequestModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$InputNominalRequestModelImpl implements _InputNominalRequestModel {
   const _$InputNominalRequestModelImpl({
-    required this.id,
-    required this.nama,
-    required this.nominal,
-    required this.waktu,
-    required this.petugas,
-    required this.username,
+    @JsonKey(name: 'action') this.action = 'mobileSubmitTransaction',
+    @JsonKey(name: 'mobileToken') required this.mobileToken,
+    @JsonKey(name: 'customer_id') required this.customerId,
+    @JsonKey(name: 'id') required this.id,
+    @JsonKey(name: 'nama') required this.nama,
+    @JsonKey(name: 'nominal') required this.nominal,
   });
 
   factory _$InputNominalRequestModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputNominalRequestModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'action')
+  final String action;
+  @override
+  @JsonKey(name: 'mobileToken')
+  final String mobileToken;
+  @override
+  @JsonKey(name: 'customer_id')
+  final String customerId;
+  @override
+  @JsonKey(name: 'id')
   final String id;
   @override
+  @JsonKey(name: 'nama')
   final String nama;
   @override
-  final String nominal;
-  @override
-  final String waktu;
-  @override
-  final String petugas;
-  @override
-  final String username;
+  @JsonKey(name: 'nominal')
+  final int nominal;
 
   @override
   String toString() {
-    return 'InputNominalRequestModel(id: $id, nama: $nama, nominal: $nominal, waktu: $waktu, petugas: $petugas, username: $username)';
+    return 'InputNominalRequestModel(action: $action, mobileToken: $mobileToken, customerId: $customerId, id: $id, nama: $nama, nominal: $nominal)';
   }
 
   @override
@@ -227,19 +239,27 @@ class _$InputNominalRequestModelImpl implements _InputNominalRequestModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InputNominalRequestModelImpl &&
+            (identical(other.action, action) || other.action == action) &&
+            (identical(other.mobileToken, mobileToken) ||
+                other.mobileToken == mobileToken) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.nama, nama) || other.nama == nama) &&
-            (identical(other.nominal, nominal) || other.nominal == nominal) &&
-            (identical(other.waktu, waktu) || other.waktu == waktu) &&
-            (identical(other.petugas, petugas) || other.petugas == petugas) &&
-            (identical(other.username, username) ||
-                other.username == username));
+            (identical(other.nominal, nominal) || other.nominal == nominal));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, nama, nominal, waktu, petugas, username);
+  int get hashCode => Object.hash(
+    runtimeType,
+    action,
+    mobileToken,
+    customerId,
+    id,
+    nama,
+    nominal,
+  );
 
   /// Create a copy of InputNominalRequestModel
   /// with the given fields replaced by the non-null parameter values.
@@ -260,29 +280,35 @@ class _$InputNominalRequestModelImpl implements _InputNominalRequestModel {
 
 abstract class _InputNominalRequestModel implements InputNominalRequestModel {
   const factory _InputNominalRequestModel({
-    required final String id,
-    required final String nama,
-    required final String nominal,
-    required final String waktu,
-    required final String petugas,
-    required final String username,
+    @JsonKey(name: 'action') final String action,
+    @JsonKey(name: 'mobileToken') required final String mobileToken,
+    @JsonKey(name: 'customer_id') required final String customerId,
+    @JsonKey(name: 'id') required final String id,
+    @JsonKey(name: 'nama') required final String nama,
+    @JsonKey(name: 'nominal') required final int nominal,
   }) = _$InputNominalRequestModelImpl;
 
   factory _InputNominalRequestModel.fromJson(Map<String, dynamic> json) =
       _$InputNominalRequestModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'action')
+  String get action;
+  @override
+  @JsonKey(name: 'mobileToken')
+  String get mobileToken;
+  @override
+  @JsonKey(name: 'customer_id')
+  String get customerId;
+  @override
+  @JsonKey(name: 'id')
   String get id;
   @override
+  @JsonKey(name: 'nama')
   String get nama;
   @override
-  String get nominal;
-  @override
-  String get waktu;
-  @override
-  String get petugas;
-  @override
-  String get username;
+  @JsonKey(name: 'nominal')
+  int get nominal;
 
   /// Create a copy of InputNominalRequestModel
   /// with the given fields replaced by the non-null parameter values.
@@ -300,9 +326,12 @@ InputNominalResponseModel _$InputNominalResponseModelFromJson(
 
 /// @nodoc
 mixin _$InputNominalResponseModel {
+  @JsonKey(name: 'status')
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'message')
   String? get message => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get data => throw _privateConstructorUsedError;
+  @JsonKey(name: 'data')
+  InputNominalDataModel? get data => throw _privateConstructorUsedError;
 
   /// Serializes this InputNominalResponseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -321,7 +350,13 @@ abstract class $InputNominalResponseModelCopyWith<$Res> {
     $Res Function(InputNominalResponseModel) then,
   ) = _$InputNominalResponseModelCopyWithImpl<$Res, InputNominalResponseModel>;
   @useResult
-  $Res call({String status, String? message, Map<String, dynamic>? data});
+  $Res call({
+    @JsonKey(name: 'status') String status,
+    @JsonKey(name: 'message') String? message,
+    @JsonKey(name: 'data') InputNominalDataModel? data,
+  });
+
+  $InputNominalDataModelCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -359,10 +394,24 @@ class _$InputNominalResponseModelCopyWithImpl<
             data: freezed == data
                 ? _value.data
                 : data // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>?,
+                      as InputNominalDataModel?,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of InputNominalResponseModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $InputNominalDataModelCopyWith<$Res>? get data {
+    if (_value.data == null) {
+      return null;
+    }
+
+    return $InputNominalDataModelCopyWith<$Res>(_value.data!, (value) {
+      return _then(_value.copyWith(data: value) as $Val);
+    });
   }
 }
 
@@ -375,7 +424,14 @@ abstract class _$$InputNominalResponseModelImplCopyWith<$Res>
   ) = __$$InputNominalResponseModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String status, String? message, Map<String, dynamic>? data});
+  $Res call({
+    @JsonKey(name: 'status') String status,
+    @JsonKey(name: 'message') String? message,
+    @JsonKey(name: 'data') InputNominalDataModel? data,
+  });
+
+  @override
+  $InputNominalDataModelCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -411,9 +467,9 @@ class __$$InputNominalResponseModelImplCopyWithImpl<$Res>
             : message // ignore: cast_nullable_to_non_nullable
                   as String?,
         data: freezed == data
-            ? _value._data
+            ? _value.data
             : data // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>?,
+                  as InputNominalDataModel?,
       ),
     );
   }
@@ -423,27 +479,23 @@ class __$$InputNominalResponseModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$InputNominalResponseModelImpl implements _InputNominalResponseModel {
   const _$InputNominalResponseModelImpl({
-    required this.status,
-    this.message,
-    final Map<String, dynamic>? data,
-  }) : _data = data;
+    @JsonKey(name: 'status') required this.status,
+    @JsonKey(name: 'message') this.message,
+    @JsonKey(name: 'data') this.data,
+  });
 
   factory _$InputNominalResponseModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputNominalResponseModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'status')
   final String status;
   @override
+  @JsonKey(name: 'message')
   final String? message;
-  final Map<String, dynamic>? _data;
   @override
-  Map<String, dynamic>? get data {
-    final value = _data;
-    if (value == null) return null;
-    if (_data is EqualUnmodifiableMapView) return _data;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
-  }
+  @JsonKey(name: 'data')
+  final InputNominalDataModel? data;
 
   @override
   String toString() {
@@ -457,17 +509,12 @@ class _$InputNominalResponseModelImpl implements _InputNominalResponseModel {
             other is _$InputNominalResponseModelImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.message, message) || other.message == message) &&
-            const DeepCollectionEquality().equals(other._data, _data));
+            (identical(other.data, data) || other.data == data));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    status,
-    message,
-    const DeepCollectionEquality().hash(_data),
-  );
+  int get hashCode => Object.hash(runtimeType, status, message, data);
 
   /// Create a copy of InputNominalResponseModel
   /// with the given fields replaced by the non-null parameter values.
@@ -488,25 +535,377 @@ class _$InputNominalResponseModelImpl implements _InputNominalResponseModel {
 
 abstract class _InputNominalResponseModel implements InputNominalResponseModel {
   const factory _InputNominalResponseModel({
-    required final String status,
-    final String? message,
-    final Map<String, dynamic>? data,
+    @JsonKey(name: 'status') required final String status,
+    @JsonKey(name: 'message') final String? message,
+    @JsonKey(name: 'data') final InputNominalDataModel? data,
   }) = _$InputNominalResponseModelImpl;
 
   factory _InputNominalResponseModel.fromJson(Map<String, dynamic> json) =
       _$InputNominalResponseModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'status')
   String get status;
   @override
+  @JsonKey(name: 'message')
   String? get message;
   @override
-  Map<String, dynamic>? get data;
+  @JsonKey(name: 'data')
+  InputNominalDataModel? get data;
 
   /// Create a copy of InputNominalResponseModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$InputNominalResponseModelImplCopyWith<_$InputNominalResponseModelImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+InputNominalDataModel _$InputNominalDataModelFromJson(
+  Map<String, dynamic> json,
+) {
+  return _InputNominalDataModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$InputNominalDataModel {
+  @JsonKey(name: 'txid')
+  String get txid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'timestamp')
+  String get timestamp => throw _privateConstructorUsedError;
+  @JsonKey(name: 'customer_id')
+  String get customerId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'blok')
+  String get blok => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nama')
+  String get nama => throw _privateConstructorUsedError;
+  @JsonKey(name: 'nominal')
+  int get nominal => throw _privateConstructorUsedError;
+  @JsonKey(name: 'petugas')
+  String get petugas => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user_id')
+  String get userId => throw _privateConstructorUsedError;
+
+  /// Serializes this InputNominalDataModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of InputNominalDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $InputNominalDataModelCopyWith<InputNominalDataModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $InputNominalDataModelCopyWith<$Res> {
+  factory $InputNominalDataModelCopyWith(
+    InputNominalDataModel value,
+    $Res Function(InputNominalDataModel) then,
+  ) = _$InputNominalDataModelCopyWithImpl<$Res, InputNominalDataModel>;
+  @useResult
+  $Res call({
+    @JsonKey(name: 'txid') String txid,
+    @JsonKey(name: 'timestamp') String timestamp,
+    @JsonKey(name: 'customer_id') String customerId,
+    @JsonKey(name: 'blok') String blok,
+    @JsonKey(name: 'nama') String nama,
+    @JsonKey(name: 'nominal') int nominal,
+    @JsonKey(name: 'petugas') String petugas,
+    @JsonKey(name: 'user_id') String userId,
+  });
+}
+
+/// @nodoc
+class _$InputNominalDataModelCopyWithImpl<
+  $Res,
+  $Val extends InputNominalDataModel
+>
+    implements $InputNominalDataModelCopyWith<$Res> {
+  _$InputNominalDataModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of InputNominalDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? txid = null,
+    Object? timestamp = null,
+    Object? customerId = null,
+    Object? blok = null,
+    Object? nama = null,
+    Object? nominal = null,
+    Object? petugas = null,
+    Object? userId = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            txid: null == txid
+                ? _value.txid
+                : txid // ignore: cast_nullable_to_non_nullable
+                      as String,
+            timestamp: null == timestamp
+                ? _value.timestamp
+                : timestamp // ignore: cast_nullable_to_non_nullable
+                      as String,
+            customerId: null == customerId
+                ? _value.customerId
+                : customerId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            blok: null == blok
+                ? _value.blok
+                : blok // ignore: cast_nullable_to_non_nullable
+                      as String,
+            nama: null == nama
+                ? _value.nama
+                : nama // ignore: cast_nullable_to_non_nullable
+                      as String,
+            nominal: null == nominal
+                ? _value.nominal
+                : nominal // ignore: cast_nullable_to_non_nullable
+                      as int,
+            petugas: null == petugas
+                ? _value.petugas
+                : petugas // ignore: cast_nullable_to_non_nullable
+                      as String,
+            userId: null == userId
+                ? _value.userId
+                : userId // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$InputNominalDataModelImplCopyWith<$Res>
+    implements $InputNominalDataModelCopyWith<$Res> {
+  factory _$$InputNominalDataModelImplCopyWith(
+    _$InputNominalDataModelImpl value,
+    $Res Function(_$InputNominalDataModelImpl) then,
+  ) = __$$InputNominalDataModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    @JsonKey(name: 'txid') String txid,
+    @JsonKey(name: 'timestamp') String timestamp,
+    @JsonKey(name: 'customer_id') String customerId,
+    @JsonKey(name: 'blok') String blok,
+    @JsonKey(name: 'nama') String nama,
+    @JsonKey(name: 'nominal') int nominal,
+    @JsonKey(name: 'petugas') String petugas,
+    @JsonKey(name: 'user_id') String userId,
+  });
+}
+
+/// @nodoc
+class __$$InputNominalDataModelImplCopyWithImpl<$Res>
+    extends
+        _$InputNominalDataModelCopyWithImpl<$Res, _$InputNominalDataModelImpl>
+    implements _$$InputNominalDataModelImplCopyWith<$Res> {
+  __$$InputNominalDataModelImplCopyWithImpl(
+    _$InputNominalDataModelImpl _value,
+    $Res Function(_$InputNominalDataModelImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of InputNominalDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? txid = null,
+    Object? timestamp = null,
+    Object? customerId = null,
+    Object? blok = null,
+    Object? nama = null,
+    Object? nominal = null,
+    Object? petugas = null,
+    Object? userId = null,
+  }) {
+    return _then(
+      _$InputNominalDataModelImpl(
+        txid: null == txid
+            ? _value.txid
+            : txid // ignore: cast_nullable_to_non_nullable
+                  as String,
+        timestamp: null == timestamp
+            ? _value.timestamp
+            : timestamp // ignore: cast_nullable_to_non_nullable
+                  as String,
+        customerId: null == customerId
+            ? _value.customerId
+            : customerId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        blok: null == blok
+            ? _value.blok
+            : blok // ignore: cast_nullable_to_non_nullable
+                  as String,
+        nama: null == nama
+            ? _value.nama
+            : nama // ignore: cast_nullable_to_non_nullable
+                  as String,
+        nominal: null == nominal
+            ? _value.nominal
+            : nominal // ignore: cast_nullable_to_non_nullable
+                  as int,
+        petugas: null == petugas
+            ? _value.petugas
+            : petugas // ignore: cast_nullable_to_non_nullable
+                  as String,
+        userId: null == userId
+            ? _value.userId
+            : userId // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$InputNominalDataModelImpl implements _InputNominalDataModel {
+  const _$InputNominalDataModelImpl({
+    @JsonKey(name: 'txid') required this.txid,
+    @JsonKey(name: 'timestamp') required this.timestamp,
+    @JsonKey(name: 'customer_id') required this.customerId,
+    @JsonKey(name: 'blok') required this.blok,
+    @JsonKey(name: 'nama') required this.nama,
+    @JsonKey(name: 'nominal') required this.nominal,
+    @JsonKey(name: 'petugas') required this.petugas,
+    @JsonKey(name: 'user_id') required this.userId,
+  });
+
+  factory _$InputNominalDataModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$InputNominalDataModelImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'txid')
+  final String txid;
+  @override
+  @JsonKey(name: 'timestamp')
+  final String timestamp;
+  @override
+  @JsonKey(name: 'customer_id')
+  final String customerId;
+  @override
+  @JsonKey(name: 'blok')
+  final String blok;
+  @override
+  @JsonKey(name: 'nama')
+  final String nama;
+  @override
+  @JsonKey(name: 'nominal')
+  final int nominal;
+  @override
+  @JsonKey(name: 'petugas')
+  final String petugas;
+  @override
+  @JsonKey(name: 'user_id')
+  final String userId;
+
+  @override
+  String toString() {
+    return 'InputNominalDataModel(txid: $txid, timestamp: $timestamp, customerId: $customerId, blok: $blok, nama: $nama, nominal: $nominal, petugas: $petugas, userId: $userId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InputNominalDataModelImpl &&
+            (identical(other.txid, txid) || other.txid == txid) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
+            (identical(other.blok, blok) || other.blok == blok) &&
+            (identical(other.nama, nama) || other.nama == nama) &&
+            (identical(other.nominal, nominal) || other.nominal == nominal) &&
+            (identical(other.petugas, petugas) || other.petugas == petugas) &&
+            (identical(other.userId, userId) || other.userId == userId));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    txid,
+    timestamp,
+    customerId,
+    blok,
+    nama,
+    nominal,
+    petugas,
+    userId,
+  );
+
+  /// Create a copy of InputNominalDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InputNominalDataModelImplCopyWith<_$InputNominalDataModelImpl>
+  get copyWith =>
+      __$$InputNominalDataModelImplCopyWithImpl<_$InputNominalDataModelImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$InputNominalDataModelImplToJson(this);
+  }
+}
+
+abstract class _InputNominalDataModel implements InputNominalDataModel {
+  const factory _InputNominalDataModel({
+    @JsonKey(name: 'txid') required final String txid,
+    @JsonKey(name: 'timestamp') required final String timestamp,
+    @JsonKey(name: 'customer_id') required final String customerId,
+    @JsonKey(name: 'blok') required final String blok,
+    @JsonKey(name: 'nama') required final String nama,
+    @JsonKey(name: 'nominal') required final int nominal,
+    @JsonKey(name: 'petugas') required final String petugas,
+    @JsonKey(name: 'user_id') required final String userId,
+  }) = _$InputNominalDataModelImpl;
+
+  factory _InputNominalDataModel.fromJson(Map<String, dynamic> json) =
+      _$InputNominalDataModelImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'txid')
+  String get txid;
+  @override
+  @JsonKey(name: 'timestamp')
+  String get timestamp;
+  @override
+  @JsonKey(name: 'customer_id')
+  String get customerId;
+  @override
+  @JsonKey(name: 'blok')
+  String get blok;
+  @override
+  @JsonKey(name: 'nama')
+  String get nama;
+  @override
+  @JsonKey(name: 'nominal')
+  int get nominal;
+  @override
+  @JsonKey(name: 'petugas')
+  String get petugas;
+  @override
+  @JsonKey(name: 'user_id')
+  String get userId;
+
+  /// Create a copy of InputNominalDataModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$InputNominalDataModelImplCopyWith<_$InputNominalDataModelImpl>
   get copyWith => throw _privateConstructorUsedError;
 }

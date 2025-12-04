@@ -70,9 +70,16 @@ class _QrScanPageExampleState extends ConsumerState<QrScanCustomerPage> {
 
         if (response != null) {
           if (response.isSuccess && response.data != null) {
-            // Navigate automatically to input page on success
+            // Navigate automatically to input page on success with parameters
             if (mounted) {
-              context.goNamed(AppConst.inputRouteName);
+              context.goNamed(
+                AppConst.inputRouteName,
+                extra: {
+                  'customerId': response.data!.id,
+                  'customerName': response.data!.name,
+                  'customerBlock': response.data!.block,
+                },
+              );
             }
           } else {
             // Show error dialog

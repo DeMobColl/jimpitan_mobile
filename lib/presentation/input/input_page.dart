@@ -1,16 +1,27 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jimpitan/core/const/prefs_key.dart';
 import 'package:jimpitan/core/helpers/shared_prefs_helper.dart';
-import 'package:jimpitan/presentation/qr_scan_customer/providers/qr_scan_provider.dart';
+import 'package:jimpitan/domain/entities/input/input_nominal_response.dart';
 import 'input_controller.dart';
 import 'widgets/input_header.dart';
 import 'widgets/input_text_field.dart';
 import 'widgets/submit_button.dart';
 
 class InputPage extends ConsumerStatefulWidget {
-  const InputPage({super.key});
+  final String? customerId;
+  final String? customerName;
+  final String? customerBlock;
+
+  const InputPage({
+    super.key,
+    this.customerId,
+    this.customerName,
+    this.customerBlock,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _InputPageState();
@@ -35,13 +46,9 @@ class _InputPageState extends ConsumerState<InputPage> {
         return;
       }
 
-      // Get QR scan data
-      final qrScanState = ref.read(qrScanNotifierProvider);
-      final qrData = qrScanState.value?.data;
-
-      // Initialize controllers
-      _namaController.text = qrData?.name ?? '';
-      _blokController.text = qrData?.block ?? '';
+      // Initialize controllers with passed parameters
+      _namaController.text = widget.customerName ?? '';
+      _blokController.text = widget.customerBlock ?? '';
       _nominalController.text = '';
     });
   }
@@ -68,34 +75,49 @@ class _InputPageState extends ConsumerState<InputPage> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    ref.listen<InputNominalState>(inputNominalControllerProvider, (
-      previous,
-      next,
-    ) {
-      if (next.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Data berhasil dikirim!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-        // Clear only nominal field, keep customer data
-        _nominalController.clear();
-        // Keep nama, blok, petugas, and username
+    ref.listen<AsyncValue<InputNominalResponse?>>(
+      inputNominalControllerProvider,
+      (previous, next) {
+        next.when(
+          data: (response) {
+            log('[INPUT PAGE] Submission response: ${response?.toString()}');
+            if (response != null && response.isSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(response.message ?? 'Data berhasil dikirim!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              // Clear only nominal field, keep customer data
+              _nominalController.clear();
 
-        // Reset state after showing success
-        Future.delayed(const Duration(seconds: 1), () {
-          ref.read(inputNominalControllerProvider.notifier).resetState();
-        });
-      } else if (next.error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: ${next.error}'),
-            backgroundColor: Colors.red,
-          ),
+              // Reset state after showing success
+              Future.delayed(const Duration(seconds: 1), () {
+                ref.read(inputNominalControllerProvider.notifier).resetState();
+              });
+            } else if (response != null && !response.isSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(response.message ?? 'Submission failed'),
+                  backgroundColor: Colors.orange,
+                ),
+              );
+            }
+          },
+          loading: () {
+            // Loading state is handled by the button
+          },
+          error: (error, stack) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: $error'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          },
         );
-      }
-    });
+      },
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -162,7 +184,33 @@ class _InputPageState extends ConsumerState<InputPage> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  SubmitButton(onPressed: () {}),
+                  SubmitButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        final prefsHelper = ref.read(sharedPrefsHelperProvider);
+
+                        final mobileToken =
+                            prefsHelper.getString(PrefsKey.authToken) ?? '';
+                        final customerId = widget.customerId ?? '';
+
+                        // log input data
+                        log(
+                          '[INPUT PAGE] Submitting data for customerId: $customerId, nama: ${_namaController.text}, blok: ${_blokController.text}, nominal: ${_nominalController.text}',
+                        );
+
+                        ref
+                            .read(inputNominalControllerProvider.notifier)
+                            .submitInputNominal(
+                              mobileToken: mobileToken,
+                              customerId: customerId,
+                              id: _blokController.text,
+                              nama: _namaController.text,
+                              nominal:
+                                  int.tryParse(_nominalController.text) ?? 0,
+                            );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

@@ -10,11 +10,12 @@ class SubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final inputState = ref.watch(inputNominalControllerProvider);
+    final isLoading = inputState.isLoading;
 
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: inputState.isLoading ? null : onPressed,
+        onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
@@ -25,7 +26,7 @@ class SubmitButton extends ConsumerWidget {
           elevation: 0,
           disabledBackgroundColor: Colors.grey[300],
         ),
-        child: inputState.isLoading
+        child: isLoading
             ? const SizedBox(
                 height: 20,
                 width: 20,

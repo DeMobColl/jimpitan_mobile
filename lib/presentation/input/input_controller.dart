@@ -1,68 +1,48 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
 import '../../domain/entities/input/input_nominal_request.dart';
+import '../../domain/entities/input/input_nominal_response.dart';
 import '../../domain/usecases/input/submit_input_nominal_usecase.dart';
 
-part 'input_controller.freezed.dart';
 part 'input_controller.g.dart';
 
-// State classes
-@freezed
-class InputNominalState with _$InputNominalState {
-  const factory InputNominalState({
-    @Default(false) bool isLoading,
-    String? error,
-    @Default(false) bool isSuccess,
-  }) = _InputNominalState;
-}
-
-// Input controller
+// Input controller using AsyncNotifier for built-in async state management
 @riverpod
 class InputNominalController extends _$InputNominalController {
   @override
-  InputNominalState build() {
-    return const InputNominalState();
+  FutureOr<InputNominalResponse?> build() {
+    // Initial state is null (no submission yet)
+    return null;
   }
 
   Future<void> submitInputNominal({
+    required String mobileToken,
+    required String customerId,
+    required String id,
     required String nama,
-    required String nominal,
-    required String petugas,
-    required String username,
+    required int nominal,
   }) async {
-    state = state.copyWith(isLoading: true, error: null, isSuccess: false);
+    // Set loading state
+    state = const AsyncValue.loading();
 
-    try {
-      const uuid = Uuid();
-      final request = InputNominalRequest(
-        id: uuid.v4(),
-        nama: nama,
-        nominal: nominal,
-        waktu: DateTime.now().toLocal().toString(),
-        petugas: petugas,
-        username: username,
-      );
+    // Create request
+    final request = InputNominalRequest(
+      mobileToken: mobileToken,
+      customerId: customerId,
+      id: id,
+      nama: nama,
+      nominal: nominal,
+    );
 
+    // Execute use case and update state
+    state = await AsyncValue.guard(() async {
       final submitInputNominalUseCase = ref.read(
         submitInputNominalUseCaseProvider,
       );
-      final response = await submitInputNominalUseCase(request);
-
-      if (response.isSuccess) {
-        state = state.copyWith(isLoading: false, isSuccess: true);
-      } else {
-        state = state.copyWith(
-          isLoading: false,
-          error: response.message ?? 'Submission failed',
-        );
-      }
-    } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
-    }
+      return await submitInputNominalUseCase(request);
+    });
   }
 
   void resetState() {
-    state = const InputNominalState();
+    state = const AsyncValue.data(null);
   }
 }
